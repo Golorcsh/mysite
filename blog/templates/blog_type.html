@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ blog_type.blog_name}}</title>
-</head>
-<body>
+{% extends 'blog_list.html' %}
 
-    {% for blog in blogs.all|slice:":9" reversed %}
-    <a href="{%url 'blog_detail' blog.pk %}"><h3>{{ blog.title }}</h3></a>
-    <h4>{{ blog.content|truncatechars:30 }}</h4>
-    <h4>作者：{{ blog.author }}</h4>
-    <h4>发表日期：{{ blog.create_date }}</h4>
-    <h4>分类：<a href="{%url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a></h4>
-    {% endfor %}
-    <p>一共有{{blogs_count}}篇博客</p>
-</body>
-</html>
+{% block title%}
+{{ blog_type.blog_name}}
+{% endblock%}
+
+{% block blog_type_name %}
+    分类:{{ blog_type.type_name }} 共有{{blogs_count}}篇
+    <a href="{% url 'blog_list' %}">查看全部博客</a>
+{% endblock %}
+
