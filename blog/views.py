@@ -58,7 +58,7 @@ def get_blog_list_common_date(request, blogs_all_list):
     content['page_of_blogs'] = page_of_blogs
     content['page_range'] = page_range
     content['blogs_count'] = Blog.objects.all().count()
-    content['blog_types'] = BlogType.objects.annotate(blog_count=Count('blog'))
+    content['blog_types'] = BlogType.objects.annotate(blog_count=Count('blog')) #获得分类数量
     content['blog_dates'] = blog_datas_dict
     return content
 
