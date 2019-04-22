@@ -8,15 +8,23 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <h1>{{ blog.title }}</h1>
-                <ul class="blog-info-description">
-                  <li>作者:{{ blog.author }}</li>
-                  <li><a href="{% url 'blog_with_type' blog.blog_type.pk %}">分类:{{ blog.blog_type }}</a></li>
-                  <li>最后更新时间:{{ blog.last_updated_time }}</li>
-                </ul>
-                <div class="blog_content">
-                   <h4> {{ blog.content }}</h4>
-                </div>
+                <div class="panel panel-success">
+                  <div class="panel-heading">
+                        <h1>{{ blog.title }}</h1>
+                        <ul class="blog-info-description">
+                          <li>作者:{{ blog.author }}</li>
+                          <li><a href="{% url 'blog_with_type' blog.blog_type.pk %}">分类:{{ blog.blog_type }}</a></li>
+                          <li>最后更新时间:{{ blog.last_updated_time }}</li>
+                        </ul>
+                  </div>
+                  <div class="panel-body">
+                      <div class="panel-body">
+                        {% autoescape off %}
+                        {{ blog.content }}
+                        {% endautoescape %}
+                      </div>
+                  </div>
+
                 <div class="blog-more">
                     {% if previous_blog %}
                         <p><a href="{% url "blog_detail" previous_blog.pk %}">上一篇:{{ previous_blog.title }}</a></p>

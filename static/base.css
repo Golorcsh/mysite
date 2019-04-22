@@ -1,4 +1,8 @@
 body{
     margin-top: 5%;
-    /*padding:0;*/
+    background: #5e5a73;
+}
+
+*{
+    list-style-type: none;
 }
