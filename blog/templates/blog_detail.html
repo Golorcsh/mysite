@@ -8,16 +8,17 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <div class="panel panel-success">
-                  <div class="panel-heading">
+                <div class="panel panel-warning">
+                  <div class="panel-heading blog-panel-heading">
                         <h1>{{ blog.title }}</h1>
                         <ul class="blog-info-description">
-                          <li>作者:{{ blog.author }}</li>
-                          <li><a href="{% url 'blog_with_type' blog.blog_type.pk %}">分类:{{ blog.blog_type }}</a></li>
-                          <li>最后更新时间:{{ blog.last_updated_time }}</li>
+                            <li>作者:{{ blog.author }}</li>
+                            <li><a href="{% url 'blog_with_type' blog.blog_type.pk %}">分类:{{ blog.blog_type }}</a></li>
+                            <li>最后更新时间:{{ blog.last_updated_time }}</li>
+                            <li> 阅读：{{ blog.get_read_num }}</li>
                         </ul>
                   </div>
-                  <div class="panel-body">
+                  <div class="panel-body blog-panel-body">
                       <div class="panel-body">
                         {% autoescape off %}
                         {{ blog.content }}

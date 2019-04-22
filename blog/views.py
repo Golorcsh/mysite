@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from blog.models import Blog, BlogType
 from django.db.models import Count
+from read_statistics.utlis import read_statistics_once_read
 # Create your views here.
 
 EachPageNumOfBlog = 6
@@ -93,8 +94,14 @@ def blog_with_date(request, year, month):
 def blog_detail(request, blog_pk):
     content= {}
     blog = get_object_or_404(Blog, pk=blog_pk)
+    # 通过识别cookie来判断用户是否阅读过本页面
+    read_cookie_key = read_statistics_once_read(request, blog)
+
     # 通过时间筛选出前一篇和后一篇博客对象
     content['previous_blog'] = Blog.objects.filter(create_date__lt=blog.create_date).first()
     content['next_blog'] = Blog.objects.filter(create_date__gt=blog.create_date).last()
     content['blog'] = blog
-    return render(request, 'blog_detail.html', content)
+    response = render(request, 'blog_detail.html', content)
+    # 响应时发送一个子定义cookie来作为判断的参数
+    # response.set_cookie(read_cookie_key, 'true') 阅读cookie
+    return response

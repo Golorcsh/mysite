@@ -23,9 +23,19 @@ ul.blog-info-description li{
     margin-right: 1em;
 }
 
-
-
 div.paginator{
     text-align: center;
 }
 
+.blog-panel-heading{
+    text-align: center;
+    background: #231f37;
+}
+
+.blog-panel-body{
+    height: 900px;
+}
+
+.text-color{
+    color: #ffffff;
+}

@@ -14,7 +14,7 @@ active
     <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
-            <div class="panel panel-default">
+            <div class="panel panel-default" zindex="1">
               <div class="panel-heading">
                   {% block blog_type_name %}博客列表{% endblock %}
               </div>
@@ -26,6 +26,7 @@ active
                             <span class="glyphicon glyphicon-user" ></span> {{ blog.author }}
                             <span class="glyphicon glyphicon-tag" ></span><a href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>
                             <span class="glyphicon glyphicon-time" ></span> {{ blog.create_date }}
+                            <span class="glyphicon glyphicon-book" ></span> {{ blog.get_read_num }}
                         </p>
                         <h4>{{ blog.content|striptags|truncatechars:100 }}</h4>
                     </div>
@@ -78,7 +79,7 @@ active
                     {% endif %}
                 </li>
               </ul>
-              <p> 共有{{page_of_blogs.paginator.count }}篇,当前第{{ page_of_blogs.number }}页，共有{{ page_of_blogs.paginator.num_pages }}页</p>
+              <p class="text-color"> 共有{{page_of_blogs.paginator.count }}篇,当前第{{ page_of_blogs.number }}页，共有{{ page_of_blogs.paginator.num_pages }}页</p>
             </div>
 
         </div>

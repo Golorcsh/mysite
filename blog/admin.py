@@ -5,11 +5,17 @@ from .models import BlogType, Blog
 
 class BlogTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'type_name')
+admin.site.register(BlogType, BlogTypeAdmin)
 
 
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'blog_type', 'author', 'create_date', 'last_updated_time')
-
-
-admin.site.register(BlogType, BlogTypeAdmin)
+    list_display = ('title', 'id', 'blog_type', 'author',  'get_read_num', 'create_date', 'last_updated_time')
 admin.site.register(Blog, BlogAdmin)
+
+# class ReadNumAdmin(admin.ModelAdmin):
+#     list_display = ['read_num', 'blog']
+
+
+
+
+# admin.site.register(ReadNum, ReadNumAdmin)
