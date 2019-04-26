@@ -4,5 +4,8 @@ from read_statistics.models import ReadNum
 
 
 class ReadNumAdmin(admin.ModelAdmin):
-    list_display = ('read_num', 'content_object')
+    list_display = ( 'content_object', 'read_num',)
 admin.site.register(ReadNum, ReadNumAdmin)
+
+
+

@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.fields import exceptions
-
 # Create your models here.
 
 
@@ -21,3 +20,4 @@ class ReadNumExpandMethod():
             return readnum.read_num
         except exceptions.ObjectDoesNotExist:
             return 0
+

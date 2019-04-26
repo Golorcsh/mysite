@@ -24,9 +24,8 @@ class Blog(models.Model, ReadNumExpandMethod):
     last_updated_time = models.DateTimeField(auto_now=True)
     read_num = models.IntegerField(default=0)
 
-
     def __str__(self):
-        return "<Blog: %s>" % self.title
+        return self.title
 
     class Meta:
         ordering = ['-create_date']

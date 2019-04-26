@@ -29,7 +29,6 @@ div.paginator{
 
 .blog-panel-heading{
     text-align: center;
-    background: #231f37;
 }
 
 .blog-panel-body{
@@ -38,4 +37,15 @@ div.paginator{
 
 .text-color{
     color: #ffffff;
+}
+
+.comment-area{
+    margin-top: 2em;
+
+}
+
+.comment-title{
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 0.4em;
+
 }

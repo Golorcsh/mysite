@@ -6,7 +6,6 @@ blog
 active
 {% endblock %}
 {% block content %}
-    <h3>欢迎来到我的网站！</h3>
-    <p><h1>{{ read_nums }} </h1></p>
+    <a href='{{ redirect_to }}'><h3>{{ message }}</h3></a>
 {% endblock%}
 

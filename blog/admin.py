@@ -10,6 +10,8 @@ admin.site.register(BlogType, BlogTypeAdmin)
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title', 'id', 'blog_type', 'author',  'get_read_num', 'create_date', 'last_updated_time')
+    search_fields = ('title', 'id', 'blog_type', 'author',  'get_read_num', 'create_date', 'last_updated_time')
+    list_filter = ('title', 'author', 'blog_type')
 admin.site.register(Blog, BlogAdmin)
 
 # class ReadNumAdmin(admin.ModelAdmin):
