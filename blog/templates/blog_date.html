@@ -4,6 +4,10 @@
 {{ blog_type.blog_name}}
 {% endblock%}
 
+{% block user_block %}
+{{ user.username }}
+{% endblock %}
+
 {% block blog_type_name %}
     日期归档:{{ blog_date }}
     <a href="{% url 'blog_list' %}">查看全部博客</a>
