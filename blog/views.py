@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from comment.models import Comment
 from read_statistics.utlis import read_statistics_once_read
+from comment.forms import CommentForm
 # Create your views here.
 
 EachPageNumOfBlog = 6
@@ -94,21 +95,21 @@ def blog_with_date(request, year, month):
 
 
 def blog_detail(request, blog_pk):
-    content= {}
+    content = {}
     blog = get_object_or_404(Blog, pk=blog_pk)
     # 通过识别cookie来判断用户是否阅读过本页面
     read_cookie_key = read_statistics_once_read(request, blog)
 
-    # 获得评论的类型
-    blog_comment_type = ContentType.objects.get_for_model(blog)
-    # 筛选出blog对应的评论
-    comments = Comment.objects.filter(content_type=blog_comment_type, object_id=blog_pk)
+    # 获得评论的对象的类型
+    blog_content_type = ContentType.objects.get_for_model(blog)    # 筛选出blog对应的评论
+    comments = Comment.objects.filter(content_type=blog_content_type, object_id=blog_pk)
 
     # 通过时间筛选出前一篇和后一篇博客对象
     content['previous_blog'] = Blog.objects.filter(create_date__lt=blog.create_date).first()
     content['next_blog'] = Blog.objects.filter(create_date__gt=blog.create_date).last()
     content['blog'] = blog
     content['comments'] = comments
+    content['comment_forms'] = CommentForm(initial={'content_type': blog_content_type.model, 'object_id': blog_pk})
     response = render(request, 'blog_detail.html', content)
     # 响应时发送一个子定义cookie来作为判断的参数
     # 阅读cookie

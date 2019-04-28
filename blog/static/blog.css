@@ -49,3 +49,7 @@ div.paginator{
     padding-bottom: 0.4em;
 
 }
+
+.django-ckeditor-widget{
+    width: 100%;
+}
