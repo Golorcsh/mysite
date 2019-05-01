@@ -32,7 +32,7 @@ div.paginator{
 }
 
 .blog-panel-body{
-    height: 900px;
+
 }
 
 .text-color{
@@ -41,7 +41,6 @@ div.paginator{
 
 .comment-area{
     margin-top: 2em;
-
 }
 
 .comment-title{
@@ -52,4 +51,13 @@ div.paginator{
 
 .django-ckeditor-widget{
     width: 100%;
+}
+
+.comment{
+    border-bottom: #cccccc dashed;
+    margin-bottom: 0.5em;
+}
+
+.reply{
+    margin-left: 2em;
 }
