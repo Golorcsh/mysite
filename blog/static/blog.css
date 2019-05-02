@@ -46,6 +46,7 @@ div.paginator{
 .comment-title{
     border-bottom: 1px solid #cccccc;
     padding-bottom: 0.4em;
+    color: #ffffff;
 
 }
 
@@ -54,12 +55,11 @@ div.paginator{
 }
 
 .comment{
-    border-bottom: #cccccc dashed;
     margin-bottom: 0.5em;
 }
 
 .reply{
-    margin-left: 2em;
+    margin-left: 5em;
 }
 
 div#replied_content_container{

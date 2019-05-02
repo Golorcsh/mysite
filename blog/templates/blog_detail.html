@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="container">
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
@@ -46,71 +47,92 @@
                     {% endif %}
                 </div>
             </div>
-        </div>
+            </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1">
-                <div class="comment-area">
-                    {% if user.is_authenticated %}
-                        <form id="comment_form" action="{% url 'update_comment' %}" method="post" style="overflow: hidden">
-                            {% csrf_token %}
-                            <h3 class="comment-title"><label for="comment_text">评论区域</label></h3>
-                            <span>{{ user }}欢迎评论~</span>
-                            <div id="replied_content_container" style="display: none">
-                                <p id="reply_title">回复:</p>
-                                <div id="replied_comment">
 
+
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1">
+                    <div class="comment-area">
+                        {% if user.is_authenticated %}
+                            <form id="comment_form" action="{% url 'update_comment' %}" method="post" style="overflow: hidden">
+                                {% csrf_token %}
+                                <h3 class="comment-title"><label for="comment_text">评论区域</label></h3>
+                                <span>{{ user }}欢迎评论~</span>
+                                <div id="replied_content_container" style="display: none">
+                                    <p id="reply_title">回复:</p>
+                                    <div id="replied_comment">
+                                    </div>
                                 </div>
-                            </div>
-                            {% get_comment_form blog as forms %}
-                            {% for field in forms %}
-                            {{ field }}
-                            {% endfor %}
-                            <span id="comment_error" class="text-danger pull-left"></span>
-                            <input type="submit" value="提交"  class="btn btn-primary pull-right" >
-                        </form>
-                    {% else %}
-                        <span>您尚未登录，无法评论！</span>
-                        <a class="btn btn-primary" href="{% url 'login'%}?from={{ request.get_full_path }}">登陆</a>
-                        or
-                        <a class="btn btn-danger" href="{% url 'register'%}?from={{ request.get_full_path }}">注册</a>
-                    {% endif %}
-                </div>
+                                {% get_comment_form blog as forms %}
+                                {% for field in forms %}
+                                {{ field }}
+                                {% endfor %}
+                                <span id="comment_error" class="text-danger pull-left"></span>
+                                <input type="submit" value="提交"  class="btn btn-primary pull-right" >
+                            </form>
+                        {% else %}
+                            <span>您尚未登录，无法评论！</span>
+                            <a class="btn btn-primary" href="{% url 'login'%}?from={{ request.get_full_path }}">登陆</a>
+                            or
+                            <a class="btn btn-danger" href="{% url 'register'%}?from={{ request.get_full_path }}">注册</a>
+                        {% endif %}
+                    </div>
 
-                <div class="comment-area">
-                    <h3 class="comment-title">评论列表</h3>
-                    <div id="comment_list">
-                    {% autoescape on %}
-                    {% get_comment blog as comments %}
-                    {% for comment in comments %}
+                    <div class="comment-area ">
+                        <h3 class="comment-title">评论列表</h3>
+                        <div id="comment_list">
+                        {% autoescape on %}
+                        {% get_comment blog as comments %}
+                        {% for comment in comments %}
                             <div id="root_{{ comment.pk }}" class="comment">
-                                <span>{{ comment.user }}</span>
-                                <span>({{ comment.comment_time|date:'Y-m-d  H:i:s' }}):</span>
-                                <div id="comment_{{ comment.pk }}">
-                                    <span>{{ comment.text|safe }}</span>
+                                <div class="comment-wrap">
+                                    <div class="photo">
+                                        <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
+                                    </div>
+                                    <div class="comment-block">
+                                        <p><span class="user">{{ comment.user }}:</span></p>
+                                        <p id="comment_{{ comment.pk }}" class="comment-text">
+                                            <span>{{ comment.text|safe }}</span>
+                                        </p>
+                                        <div class="bottom-comment">
+                                            <div class="comment-date"><span>{{ comment.comment_time|date:'Y-m-d  H:i:s' }}</span></div>
+                                            <ul class="comment-actions">
+                                                <li class="reply"><a href="javascript:reply({{ comment.pk }})">回复</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <a href="javascript:reply({{ comment.pk }})">回复</a>
                             </div>
 
-                            {% for reply in comment.root_comment.all %}
-                            <div class="reply">
-                                <span>{{ reply.user }}</span>
-                                <span>({{ reply.comment_time|date:'Y-m-d  H:i:s' }})回复{{ reply.reply_to }}:</span>
-
-                                <div id="comment_{{ reply.pk }}">
-                                    <span>{{ reply.text|safe }}</span>
+                        {% for reply in comment.root_comment.all %}
+                            <div class="comment-wrap reply">
+                                <div class="photo">
+                                    <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
+                                    <span class="user">{{ reply.user }}</span>
                                 </div>
-                                <a href="javascript:reply({{ reply.pk }})">回复</a>
+                                <div class="comment-block">
+                                    <p><span class="user">{{ reply.user }}:</span></p>
+                                    <p id="comment_{{ reply.pk }}" class="comment-text">
+                                        <span>{{ reply.text|safe }}</span>
+                                    </p>
+                                    <div class="bottom-comment">
+                                        <div class="comment-date"><span>{{ reply.comment_time|date:'Y-m-d  H:i:s' }}回复{{ reply.reply_to }}:</span></div>
+                                        <ul class="comment-actions">
+                                            <li class="reply"><a href="javascript:reply({{ reply.pk }})">回复</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            {% endfor %}
-                    {% empty %}
-                        <span id="no_comment">暂无评论</span>
-                    {% endfor %}
-                    {% endautoescape %}
+                        {% endfor %}
+                        {% empty %}
+                            <span id="no_comment">暂无评论</span>
+                        {% endfor %}
+                        {% endautoescape %}
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
