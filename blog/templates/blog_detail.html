@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load comment_tags %}
 
 {% block title %}
 {{ blog.title }}
@@ -20,6 +21,7 @@
                             <li><a href="{% url 'blog_with_type' blog.blog_type.pk %}">分类:{{ blog.blog_type }}</a></li>
                             <li>最后更新时间:{{ blog.last_updated_time|date:'Y-m-d  H:n:s' }}</li>
                             <li> 阅读：{{ blog.get_read_num }}</li>
+                            <li>{% get_comment_num blog %}</li>
                         </ul>
                   </div>
                   <div class="panel-body blog-panel-body">
@@ -56,12 +58,13 @@
                             <h3 class="comment-title"><label for="comment_text">评论区域</label></h3>
                             <span>{{ user }}欢迎评论~</span>
                             <div id="replied_content_container" style="display: none">
-                                 <span>回复</span>
+                                <p id="reply_title">回复:</p>
                                 <div id="replied_comment">
 
                                 </div>
                             </div>
-                            {% for field in comment_forms %}
+                            {% get_comment_form blog as forms %}
+                            {% for field in forms %}
                             {{ field }}
                             {% endfor %}
                             <span id="comment_error" class="text-danger pull-left"></span>
@@ -79,6 +82,7 @@
                     <h3 class="comment-title">评论列表</h3>
                     <div id="comment_list">
                     {% autoescape on %}
+                    {% get_comment blog as comments %}
                     {% for comment in comments %}
                             <div id="root_{{ comment.pk }}" class="comment">
                                 <span>{{ comment.user }}</span>
@@ -114,6 +118,31 @@
 
 {% block script_expend %}
     <script type="text/javascript">
+        function numFormat(num) {
+            return ('00'+num).substr(-2)
+        }
+        function timeFormat(timestamp){
+            var datetime =  new Data(timestamp*1000);
+            var year = datetime.getFullYear();
+            var month = numFormat(datetime.getMonth()+1);
+            var day = numFormat(datetime.getDay());
+            var hour = numFormat(datetime.getHours());
+            var minute = numFormat(datetime.getMinutes());
+            var second = numFormat(datetime.getSeconds());
+            return year+'-'+month+'-'+day +' '+hour+':'+minute+':'+second;
+        }
+
+        function reply(id) {
+            $('#reply_comment_id').val(id);
+            var html = $("#comment_" + id).html();
+            $('#replied_comment').html(html);
+            $('#replied_content_container').show();
+
+            $('html').animate({scrollTop:$('#comment_form').offset().top},300,function () {
+                CKEDITOR.instances['id_text'].focus();
+            });
+        }
+
         $("#comment_form").submit(function () {
             //判断评论框是否为空
             $('#comment_error').text('');
@@ -131,25 +160,26 @@
                 data:$(this).serialize(),
                 caches:false,
                 success:function (data) {
+                    var date = data['comment_time'];
                     console.log(data);
                     //插入数据
                     if (data['status'] == 'SUCCESS'){
+
                         if($('#reply_comment_id').val()=='0'){
                             // 插入评论
-                            var comment_html = '<div id="root_' + data['pk'] + '" class="comment"><span>' + data['username'] + '</span><span> (' + data['comment_time'] + ')：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">回复</a></div>';
+                            var comment_html = '<div id="root_' + data['pk'] + '" class="comment"><span>' + data['username'] + '</span><span> (' + date + ')：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">回复</a></div>';
                             $("#comment_list").prepend(comment_html);
                         }else{
                             // 插入回复
-                            var reply_html ='<div class="reply"><span>' + data['username'] + '</span><span> (' + data['comment_time'] + ')</span><span> 回复 </span><span>' + data['reply_to'] + '：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">回复</a></div>';
+                            var reply_html ='<div class="reply"><span>' + data['username'] + '</span><span> (' + date + ')</span><span> 回复 </span><span>' + data['reply_to'] + '：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">回复</a></div>';
                             $("#root_" + data['root_pk']).append(reply_html);
                         }
                         //清空评论框内容
-                        CKEDITOR.instances.setData('')
+                        CKEDITOR.instances.setData(' ')
                         $('#replied_content_container').hide();
                         $('#reply_comment_id').val('0');
-                        $('#no_comment').remove()
-
-
+                        $('#no_comment').remove();
+                        $('#comment_error').text('评论成功');
                     }else{
                         $('#comment_error').text(data['message']);
                     }
@@ -161,15 +191,8 @@
             return false;
         });
 
-        function reply(id) {
-            $('#reply_comment_id').val(id);
-            var html = $("#comment_" + id).html();
-            $('#replied_comment').html(html);
-            $('#replied_content_container').show();
 
-            $('html').animate({scrollTop:$('#comment_form').offset().top},300,function () {
-                CKEDITOR.instances['id_text'].focus();
-            });
-        }
+
+
     </script>
 {% endblock %}

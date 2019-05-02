@@ -29,8 +29,8 @@ class Migration(migrations.Migration):
                 ('content', models.TextField(default='content')),
                 ('create_date', models.DateTimeField(auto_now_add=True)),
                 ('last_updated_time', models.DateTimeField(auto_now=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL)),
-                ('blog_type', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='blog.BlogType')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('blog_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.BlogType')),
             ],
         ),
     ]

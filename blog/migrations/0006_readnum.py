@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('read_num', models.IntegerField(default=0)),
-                ('blog', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING, to='blog.Blog')),
+                ('blog', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='blog.Blog')),
             ],
         ),
     ]

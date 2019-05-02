@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load comment_tags %}
 
 
 {% block title %}
@@ -30,6 +31,7 @@ active
                             <span class="glyphicon glyphicon-tag" ></span><a href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>
                             <span class="glyphicon glyphicon-time" ></span> {{ blog.create_date }}
                             <span class="glyphicon glyphicon-book" ></span> {{ blog.get_read_num }}
+                            <span class="glyphicon glyphicon-comment" ></span> {% get_comment_num blog %}
                         </p>
                         <h4>{{ blog.content|striptags|truncatechars:100 }}</h4>
                     </div>

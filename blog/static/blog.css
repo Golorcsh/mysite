@@ -61,3 +61,16 @@ div.paginator{
 .reply{
     margin-left: 2em;
 }
+
+div#replied_content_container{
+    border: 1px solid #d1d1d1;
+    border-bottom: none;
+    overflow: hidden;
+    background: #f8f8f8;
+    padding: 1em 1em 0.5em;
+}
+
+#reply_title{
+    border-bottom: 1px dashed;
+    padding-bottom: 0.5em;
+}

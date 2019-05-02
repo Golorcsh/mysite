@@ -1,4 +1,3 @@
-from django.shortcuts import render, redirect
 from .models import Comment
 from .forms import CommentForm
 from django.urls import reverse
@@ -26,7 +25,7 @@ def update_comment(request):
 
         data['status'] = 'SUCCESS'
         data['username'] = comment.user.username
-        data['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %M:%S')
+        data['comment_time'] = comment.comment_time.timestamp()
         data['text'] = comment.text
 
         if parent is not None:

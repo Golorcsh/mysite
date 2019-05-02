@@ -17,9 +17,9 @@ class BlogType(models.Model):
 
 class Blog(models.Model, ReadNumExpandMethod):
     title = models.CharField(default='title', max_length=50)
-    blog_type = models.ForeignKey(BlogType, on_delete=models.DO_NOTHING)
+    blog_type = models.ForeignKey(BlogType, on_delete=models.CASCADE)
     content = RichTextUploadingField()
-    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     create_date = models.DateTimeField(auto_now_add=True)
     last_updated_time = models.DateTimeField(auto_now=True)
     read_num = models.IntegerField(default=0)
@@ -35,5 +35,5 @@ class Blog(models.Model, ReadNumExpandMethod):
 
 class ReadNum(models.Model):
     read_num = models.IntegerField(default=0)
-    blog = models.OneToOneField(Blog, on_delete=models.DO_NOTHING)
+    blog = models.OneToOneField(Blog, on_delete=models.CASCADE)
 '''
