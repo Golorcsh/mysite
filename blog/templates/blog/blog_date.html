@@ -1,12 +1,10 @@
-{% extends 'blog_list.html' %}
+{% extends 'blog/blog_list.html' %}
 
 {% block title%}
 {{ blog_type.blog_name}}
 {% endblock%}
 
-{% block user_block %}
-{{ user.username }}
-{% endblock %}
+
 
 {% block blog_type_name %}
     日期归档:{{ blog_date }}

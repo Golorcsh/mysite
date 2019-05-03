@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from mysite import views
+from user import views as user_views
 
 
 urlpatterns = [
@@ -25,9 +26,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('blog/', include('blog.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('login/', views.login, name='login'),
-    path('register/', views.register, name='register'),
-    path('logout/', views.logout, name='logout'),
+    path('user/', include('user.urls')),
     path('comment/', include('comment.urls'))
 ]
 

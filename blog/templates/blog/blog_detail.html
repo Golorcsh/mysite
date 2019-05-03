@@ -1,17 +1,17 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% load comment_tags %}
 
 {% block title %}
 {{ blog.title }}
 {% endblock %}
 
-{% block user_block %}
-{{ user.username }}
-{% endblock %}
+
 
 {% block content %}
 
     <div class="container">
+
+
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
                 <div class="panel panel-warning">
@@ -50,21 +50,19 @@
             </div>
         </div>
 
-
-
-            <div class="row">
+        <div class="row">
                 <div class="col-xs-10 col-xs-offset-1">
                     <div class="comment-area">
                         {% if user.is_authenticated %}
                             <form id="comment_form" action="{% url 'update_comment' %}" method="post" style="overflow: hidden">
                                 {% csrf_token %}
                                 <h3 class="comment-title"><label for="comment_text">评论区域</label></h3>
-                                <span>{{ user }}欢迎评论~</span>
-                                <div id="replied_content_container" style="display: none">
-                                    <p id="reply_title">回复:</p>
-                                    <div id="replied_comment">
-                                    </div>
+                                <span>{{ user.get_username_or_nickname }}欢迎评论~</span>
+                                <div id="reply_content_container" style="display:none;">
+                                    <p id="reply_title">回复：</p>
+                                    <div id="reply_content"></div>
                                 </div>
+
                                 {% get_comment_form blog as forms %}
                                 {% for field in forms %}
                                 {{ field }}
@@ -74,9 +72,7 @@
                             </form>
                         {% else %}
                             <span>您尚未登录，无法评论！</span>
-                            <a class="btn btn-primary" href="{% url 'login'%}?from={{ request.get_full_path }}">登陆</a>
-                            or
-                            <a class="btn btn-danger" href="{% url 'register'%}?from={{ request.get_full_path }}">注册</a>
+                            <a class="btn btn-primary" href="javascript:login()">登陆</a>
                         {% endif %}
                     </div>
 
@@ -87,19 +83,19 @@
                         {% get_comment blog as comments %}
                         {% for comment in comments %}
                             <div id="root_{{ comment.pk }}" class="comment">
-                                <div class="comment-wrap">
+                                <div id="comment_{{ comment.pk }}" class="comment-wrap">
                                     <div class="photo">
                                         <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
                                     </div>
                                     <div class="comment-block">
-                                        <p><span class="user">{{ comment.user }}:</span></p>
-                                        <p id="comment_{{ comment.pk }}" class="comment-text">
-                                            <span>{{ comment.text|safe }}</span>
+                                        <p><span class="user">{{ comment.user.get_username_or_nickname }}:</span></p>
+                                        <p  class="comment-text">
+                                            {{ comment.text|safe }}
                                         </p>
                                         <div class="bottom-comment">
                                             <div class="comment-date"><span>{{ comment.comment_time|date:'Y-m-d  H:i:s' }}</span></div>
                                             <ul class="comment-actions">
-                                                <li class="reply"><a href="javascript:reply({{ comment.pk }})">回复</a></li>
+                                                <li class="reply btn btn-primary"><a class="button" href="javascript:reply({{ comment.pk }})">回复</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -110,17 +106,16 @@
                             <div class="comment-wrap reply">
                                 <div class="photo">
                                     <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
-                                    <span class="user">{{ reply.user }}</span>
                                 </div>
                                 <div class="comment-block">
-                                    <p><span class="user">{{ reply.user }}:</span></p>
+                                    <p><span class="user">{{ reply.user.get_username_or_nickname }}:</span></p>
                                     <p id="comment_{{ reply.pk }}" class="comment-text">
                                         <span>{{ reply.text|safe }}</span>
                                     </p>
                                     <div class="bottom-comment">
-                                        <div class="comment-date"><span>{{ reply.comment_time|date:'Y-m-d  H:i:s' }}回复{{ reply.reply_to }}:</span></div>
+                                        <div class="comment-date"><span>{{ reply.comment_time|date:'Y-m-d  H:i:s' }}回复{{ reply.reply_to.get_username_or_nickname }}:</span></div>
                                         <ul class="comment-actions">
-                                            <li class="reply"><a href="javascript:reply({{ reply.pk }})">回复</a></li>
+                                            <li class="reply btn btn-primary"><a class="button" href="javascript:reply({{ reply.pk }})">回复</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -134,87 +129,93 @@
                     </div>
                 </div>
             </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <form action="{% url 'login' %}?from={{ request.get_full_path }}" method="post">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">登陆</h4>
+                  </div>
+                  <div class="modal-body">
+                        {% csrf_token %}
+                        {% for field in login_form %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {# 用户错误信息 #}
+                            <p class="text-danger">{{ field.erros.as_text }}</p>
+                        {% endfor %}
+                            {# 表单错误信息 #}
+                        <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">登陆</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  </div>
+                </form>
+            </div>
+          </div>
         </div>
+
     </div>
 {% endblock %}
 
 {% block script_expend %}
     <script type="text/javascript">
-        function numFormat(num) {
-            return ('00'+num).substr(-2)
-        }
-        function timeFormat(timestamp){
-            var datetime =  new Data(timestamp*1000);
-            var year = datetime.getFullYear();
-            var month = numFormat(datetime.getMonth()+1);
-            var day = numFormat(datetime.getDay());
-            var hour = numFormat(datetime.getHours());
-            var minute = numFormat(datetime.getMinutes());
-            var second = numFormat(datetime.getSeconds());
-            return year+'-'+month+'-'+day +' '+hour+':'+minute+':'+second;
+        function login() {
+            $('#login_modal').modal('show');
         }
 
-        function reply(id) {
-            $('#reply_comment_id').val(id);
-            var html = $("#comment_" + id).html();
-            $('#replied_comment').html(html);
-            $('#replied_content_container').show();
-
-            $('html').animate({scrollTop:$('#comment_form').offset().top},300,function () {
+        function reply(reply_comment_id){
+            // 设置值
+            $('#reply_comment_id').val(reply_comment_id);
+            var html = $("#comment_" + reply_comment_id).html();
+            $('#reply_content').html(html);
+            $('#reply_content_container').show();
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function(){
                 CKEDITOR.instances['id_text'].focus();
             });
         }
 
-        $("#comment_form").submit(function () {
-            //判断评论框是否为空
-            $('#comment_error').text('');
-            if (CKEDITOR.instances['id_text'].document.getBody().getText().trim() == ''){
-                $('#comment_error').text('评论内容不能为空');
+        $("#comment_form").submit(function(){
+            // 判断是否为空
+            $("#comment_error").text('');
+            if(CKEDITOR.instances["id_text"].document.getBody().getText().trim()==''){
+                $("#comment_error").text('评论内容不能为空');
                 return false;
             }
-
-            //更新数据到textare
-            CKEDITOR.instances['id_text'].updateElement()
-            //异步提交
+            // 更新数据到textarea
+            CKEDITOR.instances['id_text'].updateElement();
+            // 异步提交
             $.ajax({
-                url:"{% url 'update_comment' %}",
-                type:"POST",
-                data:$(this).serialize(),
-                caches:false,
-                success:function (data) {
-                    var date = data['comment_time'];
+                url: "{% url 'update_comment' %}",
+                type: 'POST',
+                data: $(this).serialize(),
+                cache: false,
+                success: function(data){
                     console.log(data);
-                    //插入数据
-                    if (data['status'] == 'SUCCESS'){
-
-                        if($('#reply_comment_id').val()=='0'){
-                            // 插入评论
-                            var comment_html = '<div id="root_' + data['pk'] + '" class="comment"><span>' + data['username'] + '</span><span> (' + date + ')：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">回复</a></div>';
-                            $("#comment_list").prepend(comment_html);
-                        }else{
-                            // 插入回复
-                            var reply_html ='<div class="reply"><span>' + data['username'] + '</span><span> (' + date + ')</span><span> 回复 </span><span>' + data['reply_to'] + '：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">回复</a></div>';
-                            $("#root_" + data['root_pk']).append(reply_html);
-                        }
-                        //清空评论框内容
-                        CKEDITOR.instances.setData(' ')
-                        $('#replied_content_container').hide();
+                    if(data['status']=="SUCCESS"){
+                        // 插入数据
+                        var comment_html = '<div>' + data['username'] +
+                                           ' (' + data['comment_time'] + ')：' +
+                                           data['text'] + '</div>';
+                        // 清空编辑框的内容
+                        CKEDITOR.instances['id_text'].setData('');
+                        $('#reply_content_container').hide();
                         $('#reply_comment_id').val('0');
                         $('#no_comment').remove();
-                        $('#comment_error').text('评论成功');
                     }else{
-                        $('#comment_error').text(data['message']);
+                        // 显示错误信息
+                        $("#comment_error").text(data['message']);
                     }
                 },
-                error:function (xhr) {
+                error: function(xhr){
                     console.log(xhr);
                 }
             });
             return false;
         });
-
-
-
-
     </script>
 {% endblock %}

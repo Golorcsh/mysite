@@ -24,12 +24,12 @@ def update_comment(request):
         comment.save()
 
         data['status'] = 'SUCCESS'
-        data['username'] = comment.user.username
+        data['username'] = comment.user.get_username_or_nickname()
         data['comment_time'] = comment.comment_time.timestamp()
         data['text'] = comment.text
 
         if parent is not None:
-            data['reply_to'] = comment.reply_to.username
+            data['reply_to'] = comment.reply_to.get_username_or_nickname()
         else:
             data['reply_to'] = ''
         data['pk'] = comment.pk

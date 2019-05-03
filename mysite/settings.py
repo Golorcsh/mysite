@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'blog',
     'read_statistics',
-    'comment'
-
+    'comment',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -185,3 +185,15 @@ SUIT_CONFIG = {  # suit页面配置
              ),
     # label表示name，app表示上边的install的app，models表示用了哪些models
 }
+
+
+# 发送邮件设置
+# https://docs.djangoproject.com/en/2.0/ref/settings/#email
+# https://docs.djangoproject.com/en/2.0/topics/email/
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '1045132383@qq.com'
+EMAIL_HOST_PASSWORD = 'itmlrkmydnoubfhj'  # 授权码
+EMAIL_SUBJECT_PREFIX = 'Golor'
+EMAIL_USE_TLS = True  # 与SMTP服务器通信时，是否启动TLS链接(安全链接)

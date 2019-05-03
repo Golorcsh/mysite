@@ -1,6 +1,5 @@
 html,
 body {
-    background-color: #5e5a73;
     font-family: "PT Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     color: #555f77;
     -webkit-font-smoothing: antialiased;
@@ -95,4 +94,9 @@ p {
 }
 .comment-actions li.reply {
     padding-left: 0.625rem;
+}
+
+.comment-actions li.reply a.button{
+    text-decoration: none;
+    color: #FFFFFF;
 }

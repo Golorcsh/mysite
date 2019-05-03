@@ -1,14 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from blog.models import Blog, BlogType
 from django.db.models import Count
-from django.contrib.contenttypes.models import ContentType
-from comment.models import Comment
 from read_statistics.utlis import read_statistics_once_read
-from comment.forms import CommentForm
+from user.forms import LoginForm
 # Create your views here.
 
-EachPageNumOfBlog = 6
+EachPageNumOfBlog = 10
 
 
 def get_blog_list_common_date(request, blogs_all_list):
@@ -39,17 +37,6 @@ def get_blog_list_common_date(request, blogs_all_list):
     if page_range[-1] != paginaotr.num_pages:
         page_range.append(paginaotr.num_pages)
 
-
-    '''
-    BlogType.objects.annotate(blog_count=Count('blog'))等价下方效果
-     # 获取博客分类的数量
-    blog_type_list = []
-    blog_types = BlogType.objects.all()
-    for blog_type in blog_types:
-        blog_type.blog_count = Blog.objects.filter(blog_type=blog_type).count()
-        blog_type_list.append(blog_type)
-    '''
-
     # 获得日期归档的数量
     blog_datas = Blog.objects.dates('create_date', 'month', order='DESC')
     blog_datas_dict = {}
@@ -70,7 +57,7 @@ def get_blog_list_common_date(request, blogs_all_list):
 def blog_list(request):
     blog_all_list = Blog.objects.all()
     content = get_blog_list_common_date(request, blog_all_list)
-    return render(request, 'blog_list.html', content)
+    return render(request, 'blog/blog_list.html', content)
 
 
 def blog_with_type(request, blog_type_pk):
@@ -80,7 +67,7 @@ def blog_with_type(request, blog_type_pk):
     content = get_blog_list_common_date(request, blog_all_list)
     # 通过blog的类型筛选出所有同一个类型的blog
     content['blog_type'] = blog_type
-    return render(request, 'blog_type.html', content)
+    return render(request, 'blog/blog_type.html', content)
 
 
 def blog_with_date(request, year, month):
@@ -91,7 +78,7 @@ def blog_with_date(request, year, month):
 
     # 通过blog的类型筛选出所有同一个类型的blog
     content['blog_date'] = '%s年%s月' % (year, month)
-    return render(request, 'blog_date.html', content)
+    return render(request, 'blog/blog_date.html', content)
 
 
 def blog_detail(request, blog_pk):
@@ -104,7 +91,8 @@ def blog_detail(request, blog_pk):
     content['previous_blog'] = Blog.objects.filter(create_date__lt=blog.create_date).first()
     content['next_blog'] = Blog.objects.filter(create_date__gt=blog.create_date).last()
     content['blog'] = blog
-    response = render(request, 'blog_detail.html', content)
+    content['login_form'] = LoginForm()
+    response = render(request, 'blog/blog_detail.html', content)
     # 响应时发送一个子定义cookie来作为判断的参数
     # 阅读cookie
     response.set_cookie(read_cookie_key, 'true')
