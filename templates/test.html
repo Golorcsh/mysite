@@ -1,0 +1,14 @@
+{% extends 'user/form.html' %}
+
+
+{% block content %}
+ <button id="test" class="btn btn-default">test</button>
+{% endblock %}
+
+{% block script_expend %}
+    <script type="text/javascript">
+        $('#test').click(function () {
+            alert('test');
+        })
+    </script>
+{% endblock %}

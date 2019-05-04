@@ -82,34 +82,36 @@ def change_nickname(request):
 
 def bind_email(request):
     redirect_to = request.GET.get('from', reverse('home'))
-    content = {}
+
     if request.method == 'POST':
-        bind_email_form = BindEmailForm(request.POST, request=request)
-        if bind_email_form.is_valid():
-            email = bind_email_form.cleaned_data['email']
+        form = BindEmailForm(request.POST, request=request)
+        if form.is_valid():
+            email = form.cleaned_data['email']
             request.user.email = email
             request.user.save()
             return redirect(redirect_to)
     else:
-        bind_email_form = BindEmailForm()
+        form = BindEmailForm()
 
-    content['form'] = bind_email_form
-    content['page_title'] = '绑定邮箱'
-    content['form_title'] = "绑定邮箱"
-    content['submit_text'] = '绑定'
-    content['return_back_url'] = redirect_to
-    return render(request, 'user/bind_email.html', content)
+    context = {}
+    context['page_title'] = '绑定邮箱'
+    context['form_title'] = '绑定邮箱'
+    context['submit_text'] = '绑定'
+    context['form'] = form
+    context['return_back_url'] = redirect_to
+    return render(request, 'user/bind_email.html', context)
 
 
 def send_verification_code(request):
     email = request.GET.get('email', '')
     data = {}
+
     if email != '':
         # 生成验证码
         code = ''.join(random.sample(string.ascii_letters + string.digits, 4))
         now = int(time.time())
         send_code_time = request.session.get('send_code_time', 0)
-        if now - send_code_time < 30:
+        if now - send_code_time < 60:
             data['status'] = 'ERROR'
         else:
             request.session['bind_email_code'] = code
@@ -119,7 +121,7 @@ def send_verification_code(request):
             send_mail(
                 '绑定邮箱',
                 '验证码：%s' % code,
-                '2872402050@qq.com',
+                '1045132383@qq.com',
                 [email],
                 fail_silently=False,
             )
@@ -127,10 +129,5 @@ def send_verification_code(request):
     else:
         data['status'] = 'ERROR'
     return JsonResponse(data)
-
-
-
-
-
 
 
