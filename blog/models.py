@@ -3,9 +3,8 @@ from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.contenttypes.models import ContentType
 from read_statistics.models import ReadNumExpandMethod
+from django.urls import reverse
 # Create your models here.
-
-
 
 
 class BlogType(models.Model):
@@ -23,6 +22,12 @@ class Blog(models.Model, ReadNumExpandMethod):
     create_date = models.DateTimeField(auto_now_add=True)
     last_updated_time = models.DateTimeField(auto_now=True)
     read_num = models.IntegerField(default=0)
+
+    def get_url(self):
+        return reverse('blog_detail', kwargs={'blog_pk': self.pk})
+
+    def get_email(self):
+        return self.author.email
 
     def __str__(self):
         return self.title

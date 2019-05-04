@@ -23,6 +23,9 @@ def update_comment(request):
             comment.root = parent if parent.root is None else parent.root
         comment.save()
 
+        # 发送邮件通知
+        comment.send_mail()
+
         data['status'] = 'SUCCESS'
         data['username'] = comment.user.get_username_or_nickname()
         data['comment_time'] = comment.comment_time.timestamp()

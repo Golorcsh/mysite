@@ -6,6 +6,7 @@ from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.conf import  settings
 from django.core.mail import send_mail
 from user.forms import LoginForm, RegisterForm, ChangeNickname, BindEmailForm, ChangePasswordForm, ForgotPasswordForm
 from .models import Profile
@@ -86,7 +87,7 @@ def change_password(request):
     redirect_to = request.GET.get('from', reverse('home'))
     content = {}
     if request.method == 'POST':
-        forgot_password_form = ForgotPasswordForm(request.POST, user=request.user)
+        forgot_password_form = ChangePasswordForm(request.POST, user=request.user)
         if forgot_password_form.is_valid():
             user = request.user
             password_new = forgot_password_form.cleaned_data['password_new']
@@ -155,13 +156,15 @@ def bind_email(request):
 
 
 def send_verification_code(request):
+    data = {}
     email = request.GET.get('email', '')
     send_for = request.GET.get('send_for', '')
-    data = {}
+
+    # 生成验证码
+    code = ''.join(random.sample(string.ascii_letters + string.digits, 6))
+    mail_content = 'http://golor.xyz' + ' verification code:%s' %code
 
     if email != '':
-        # 生成验证码
-        code = ''.join(random.sample(string.ascii_letters + string.digits, 4))
         now = int(time.time())
         send_code_time = request.session.get('send_code_time', 0)
         if now - send_code_time < 60:
@@ -172,9 +175,9 @@ def send_verification_code(request):
 
             # 发送邮件
             send_mail(
-                '绑定邮箱',
-                '验证码：%s' % code,
-                '1045132383@qq.com',
+                'Golor\'Blog',
+                mail_content,
+                settings.EMAIL_HOST_USER,
                 [email],
                 fail_silently=False,
             )
