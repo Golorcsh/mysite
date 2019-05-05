@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 
 # Create your models here.
@@ -40,6 +41,7 @@ class Comment(models.Model):
 
     def send_mail(self):
         # 发送邮件通知
+        content ={}
         if self.parent is None:
             # 评论博客
             subject = '有人评论了你的博客'
@@ -49,7 +51,9 @@ class Comment(models.Model):
             subject = '有人回复了你的评论'
             email = self.reply_to.email
         if email != '':
-            text = self.text + '\n' + self.content_object.get_url()
+            content['comment_text'] = self.text
+            content['url'] = self.content_object.get_url()
+            text = render_to_string('send_email.html', content)
             send_mail = Sendmail(subject, text, email, False)
             send_mail.start()
 
@@ -57,5 +61,4 @@ class Comment(models.Model):
         ordering = ['comment_time']
 
 
-# class Replay(models.Model):
-    # comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+

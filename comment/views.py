@@ -2,6 +2,7 @@ from .models import Comment
 from .forms import CommentForm
 from django.urls import reverse
 from django.http import JsonResponse
+from django.shortcuts import render
 # Create your views here.
 
 
@@ -42,5 +43,4 @@ def update_comment(request):
         data['message'] = list(comment_form.errors.values())[0][0]
 
     return JsonResponse(data)
-
 
