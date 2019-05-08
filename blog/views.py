@@ -20,22 +20,22 @@ def get_blog_list_common_date(request, blogs_all_list):
 
     content = {}
     # 每10个blog一页
-    paginaotr = Paginator(blogs_all_list, EachPageNumOfBlog)
+    paginator = Paginator(blogs_all_list, EachPageNumOfBlog)
     # 获取url的页码参数
     page_num = int(request.GET.get('page', 1))
-    page_of_blogs = paginaotr.get_page(page_num)
+    page_of_blogs = paginator.get_page(page_num)
     # 当前页码的前后3页的范围
-    page_range = [x for x in range(int(page_num)-2, int(page_num)+3) if 0 < x <= paginaotr.num_pages]
+    page_range = [x for x in range(int(page_num)-2, int(page_num)+3) if 0 < x <= paginator.num_pages]
     print(page_range)
     if page_range[0]-1 >= 2:
         page_range.insert(0, "...")
-    if paginaotr.num_pages - page_range[-1] >= 2:
+    if paginator.num_pages - page_range[-1] >= 2:
         page_range.append('...')
     # 添加首页和尾页
     if page_range[0] != 1 :
         page_range.insert(0, 1)
-    if page_range[-1] != paginaotr.num_pages:
-        page_range.append(paginaotr.num_pages)
+    if page_range[-1] != paginator.num_pages:
+        page_range.append(paginator.num_pages)
 
     # 获得日期归档的数量
     blog_datas = Blog.objects.dates('create_date', 'month', order='DESC')
