@@ -18,7 +18,7 @@ active
         <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
             <div class="panel panel-default" zindex="1">
               <div class="panel-heading">
-                  {% block blog_type_name %}博客列表{% endblock %}
+                  <h3 style="text-align: center">{% block blog_type_name %}博客列表{% endblock %}</h3>
               </div>
               <div class="panel-body">
                 {% for blog in blogs.object_list %}

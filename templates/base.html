@@ -96,6 +96,9 @@
 
     {% block content %}
     {% endblock %}
+
+
+
     <div class="waifu">
         <div class="waifu-tips"></div>
         <canvas id="live2d" class="live2d"></canvas>
@@ -112,6 +115,7 @@
 
 
 
+
     {# JS#}
     <script zindex='-1' src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>
     <script src="{% static 'jquery.min.js' %}"></script>
@@ -124,11 +128,14 @@
     <script src="{% static 'live2d/assets/waifu-tips.js' %}"></script>
     <script src="{% static 'live2d/assets/live2d.js' %}"></script>
 
+
     <script type="text/javascript">
         live2d_settings['modelId'] = 1;
         live2d_settings['modelTexturesId'] = 87;
     	initModel("{% static '/live2d/assets/waifu-tips.json' %}")
     </script>
+
+
     {% block script_expend %}
 
     {% endblock %}
