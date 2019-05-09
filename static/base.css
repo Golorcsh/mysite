@@ -16,3 +16,10 @@ body{
 ul.navbar-right{
     margin-right: 0;
 }
+
+.footer{
+    text-align: center;
+    background: #2c3e50;
+    height: 20%;
+    width: 100%;
+}
