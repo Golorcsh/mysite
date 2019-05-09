@@ -9,12 +9,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <link href="https://cdn.bootcss.com/font-awesome/5.8.0/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static "blog.css" %}">
+    <link rel="stylesheet" href="{% static "style.css" %}">
+    <link rel="stylesheet" href="{% static "about.css" %}">
     <link rel="stylesheet" href="{% static "comment.css" %}">
+    {% block head %}
 
+    {% endblock %}
     <title>{% block title %}{% endblock%}</title>
-    <nav tyle="height: 5%" class="navbar navbar-default navbar-fixed-top" s>
+    <nav tyle="height: 5%" class="navbar navbar-default navbar-fixed-top" >
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -32,6 +37,7 @@
           <ul class="nav navbar-nav">
             <li class="{% block home_active %}{% endblock %}"><a href="{% url 'home'%}">首页 </a></li>
             <li class="{% block blog_active %}{% endblock %}"><a href="{% url 'blog_list' %}">博客</a></li>
+            <li class="{% block about_active %}{% endblock %}"><a href="{% url 'about' %}">关于</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分类 <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -81,16 +87,17 @@
     </nav>
 </head>
 <body style="margin-top: 5%">
-    {% block content %}
-    {% endblock %}
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
     {# JS#}
     <script src="{% static 'jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
-    <script type="text/javascript" color="0,0,0" zindex=" -1 " opacity='1' src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script type="text/javascript" src="{% static 'mouse.js' %}"></script>
-
     {% block script_expend %}
 
     {% endblock %}

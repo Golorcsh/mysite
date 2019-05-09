@@ -1,0 +1,47 @@
+.box_about {
+    margin-top: 10%;
+    width: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 40px;
+    text-align: center;
+    color: white;
+    font-family: 'Century Gothic', sans-serif;
+    border-radius: 20px;
+}
+.box_about-img {
+    border-radius: 30%;
+    max-width: 200px;
+    max-height: 200px;
+}
+.box_about h1 {
+    font-size: 50px;
+    letter-spacing: 4px;
+    font-weight: 100;
+}
+.box_about h5 {
+    font-size: 30px;
+    letter-spacing: 3px;
+    font-weight: 100;
+}
+.box_about p {
+    text-align: justify;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+.box_about li {
+    display: inline-block;
+    margin: 6px;
+    list-style: none;
+}
+.box_about li a {
+    color: white;
+    text-decoration: none;
+    font-size: 60px;
+    transition: all ease-in-out 250ms;
+}
+.box_about li a:hover {
+    color: #b9b9b9;
+}
+

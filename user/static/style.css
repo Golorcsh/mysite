@@ -1,0 +1,112 @@
+.box {
+    margin-top: 10%;
+    width: 100%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    background: #2c3e50;
+    text-align: center;
+    border-radius: 20px;
+}
+.box h1 {
+    margin-top: 0;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.box label{
+    font-size: large;
+}
+.box input[type='text'],
+.box input[type='password'] {
+    font-size: medium;
+    height: auto;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    margin-top: 0;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 14px 10px;
+    width: 70%;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+}
+.box input[type='text']:focus,
+.box input[type='password']:focus {
+    width: 90%;
+    border-color: #2ecc71;
+}
+.box input[type='submit'] {
+    font-size: medium;
+    height: auto;
+    background: none;
+    margin: 20px auto;
+    margin-top: 0;
+    display: inline-block;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 10px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.box input[type='submit']:hover{
+    background: #2ecc71;
+    border-color: #2ecc71;
+}
+
+.box button[name='send_code']{
+        font-size: medium;
+    height: auto;
+    background: none;
+    margin: 20px auto;
+    margin-top: 0;
+    display: inline-block;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 10px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.box button[name='send_code']:hover {
+    background: #e67e22;
+    border-color: #f1c40f;
+}
+
+.box span{
+    color: red;
+    text-align: center;
+}
+
+.box button[name='back']  {
+    font-size: medium;
+    height: auto;
+    background: none;
+    margin: 20px auto;
+    margin-top: 0;
+    display: inline-block;
+    text-align: center;
+    border: 2px solid #ecf0f1;
+    padding: 10px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.box button[name='back']:hover{
+    background: #7f8c8d;
+    border-color: #2ecc71;
+}

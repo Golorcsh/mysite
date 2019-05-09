@@ -24,6 +24,7 @@ from user import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin:index'),
     path('', views.index, name='home'),
+    path('about/', views.about, name='about'),
     path('blog/', include('blog.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('user/', include('user.urls')),

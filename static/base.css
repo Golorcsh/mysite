@@ -1,11 +1,16 @@
-
+html{
+        height: 100%;
+}
 
 body{
-    background: #59557d;
-    height: 100%;
+    background: #34495e;
 }
 *{
     list-style-type: none;
+}
+
+html div.content{
+    height: 100%;
 }
 
 ul.navbar-right{

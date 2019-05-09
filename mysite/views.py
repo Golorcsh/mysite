@@ -10,6 +10,10 @@ def index(request):
     return render(request, 'index.html')
 
 
+def about(request):
+    return render(request, 'about.html')
+
+
 def search_paginator(request, search_list):
     content = {}
     # 分页

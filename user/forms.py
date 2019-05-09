@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='用户名', widget=forms.TextInput(
-        attrs={'class': 'form-control', 'autocomplete': "off", 'placeholder': '请输入用户名或邮箱'}))
+        attrs={'autocomplete': "off", 'placeholder': '请输入用户名或邮箱'}))
 
     password = forms.CharField(label='密码', widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请输入密码'}))
+        attrs={'placeholder': '请输入密码'}))
 
     def clean(self):
         username_or_email = self.cleaned_data['username_or_email']
@@ -30,19 +30,19 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     username = forms.CharField(label='用户名', max_length=20, min_length=6, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'autocomplete': "off", 'placeholder': '请输入用户名(6-20)'}))
+        attrs={'autocomplete': "off", 'placeholder': '请输入用户名(6-20)'}))
 
     email = forms.EmailField(label='邮箱', required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': '请输入邮箱'}))
+        attrs={'placeholder': '请输入邮箱'}))
 
     verification_code = forms.CharField(label='验证码', required=False, widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': '点击“发送验证码”发送到邮箱'}))
+            attrs={'autocomplete': "off", 'placeholder': '点击“发送验证码”发送到邮箱'}))
 
     password = forms.CharField(label='密码', min_length=6, widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请输入密码'}))
+        attrs={'placeholder': '请输入密码'}))
 
     password_again = forms.CharField(label='确认密码', min_length=6, widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请再输入密码'}))
+        attrs={'placeholder': '请再输入密码'}))
 
     def __init__(self, *args, **kwargs):
         if 'request' in kwargs:
@@ -108,7 +108,7 @@ class BindEmailForm(forms.Form):
     email = forms.EmailField(
         label='邮箱',
         widget=forms.EmailInput(
-            attrs={'class':'form-control', 'placeholder':'请输入正确的邮箱'}
+            attrs={'class': 'form-control', 'placeholder':'请输入正确的邮箱'}
         )
     )
     verification_code = forms.CharField(
@@ -158,13 +158,13 @@ class BindEmailForm(forms.Form):
 
 class ChangePasswordForm(forms.Form):
     password_old = forms.CharField(label='原密码', min_length=6, widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请输入原密码'}))
+        attrs={'placeholder': '请输入原密码'}))
 
     password_new = forms.CharField(label='新密码', min_length=6, widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请输入新密码'}))
+        attrs={'placeholder': '请输入新密码'}))
 
     password_again = forms.CharField(label='确认密码', min_length=6, widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请再输入密码'}))
+        attrs={'placeholder': '请再输入密码'}))
 
     def __init__(self, *args, **kwargs):
         if 'user' in kwargs:
@@ -187,14 +187,14 @@ class ChangePasswordForm(forms.Form):
 
 
 class ForgotPasswordForm(forms.Form):
-    email = forms.EmailField(label='邮箱', widget=forms.EmailInput(
-            attrs={'class': 'form-control', 'placeholder': '请输入账号绑定的邮箱'}))
+    email = forms.EmailField(label='邮箱', required=False, widget=forms.TextInput(
+        attrs={'placeholder': '请输入账号绑定的邮箱'}))
 
     verification_code = forms.CharField(label='验证码', required=False, widget=forms.TextInput(
-                attrs={'class': 'form-control', 'autocomplete': "off", 'placeholder': '点击“发送验证码”发送到邮箱'})
+                attrs={'autocomplete': "off", 'placeholder': '点击“发送验证码”发送到邮箱'})
     )
     password_new = forms.CharField(label='新密码', min_length=6, widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': '请输入新密码'}))
+        attrs={'placeholder': '请输入新密码'}))
 
     def __init__(self, *args, **kwargs):
         if 'request' in kwargs:
