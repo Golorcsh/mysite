@@ -56,7 +56,7 @@
                         {% if user.is_authenticated %}
                             <form id="comment_form" action="{% url 'update_comment' %}" method="post" style="overflow: hidden">
                                 {% csrf_token %}
-                                <h3 class="comment-title"><label for="comment_text">评论区域</label></h3>
+                                <h3 class="comment-title">评论区域</h3>
                                 <span>{{ user.get_username_or_nickname }}欢迎评论~</span>
                                 <div id="reply_content_container" style="display:none;">
                                     <p id="reply_title">回复：</p>
@@ -131,30 +131,26 @@
             </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-sm" role="document">
+        <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" >
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{% url 'login' %}?from={{ request.get_full_path }}" method="post">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">登陆</h4>
-                  </div>
-                  <div class="modal-body">
+                <form class="box" action="{% url 'login' %}?from={{ request.get_full_path }}" method="post">
+                        <h1>login</h1>
                         {% csrf_token %}
                         {% for field in login_form %}
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
-                            {# 用户错误信息 #}
-                            <p class="text-danger">{{ field.erros.as_text }}</p>
+                            <label  for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <span>{{ field }}</span>
+
                         {% endfor %}
-                            {# 表单错误信息 #}
-                        <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">登陆</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                  </div>
-                </form>
+                        <div class='box-error'>
+                            {# 用户错误信息 #}
+                             <span>{{ field.errors.as_text }}</span>
+                             {# 表单错误信息 #}
+                             <span>{{ login_form.non_field_errors }}</span>
+                        </div>
+                        <input type="submit" name="登陆" class="btn btn-primary center-block">
+                        <a class="center-block" href="{% url 'forgot_password' %}">忘记密码？</a>
+                    </form>
             </div>
           </div>
         </div>
