@@ -154,11 +154,33 @@
             </div>
           </div>
         </div>
-
     </div>
+
+        <button id="back_top" class="btn btn-default btn-warning btn-group back_top" >top</button>
+
 {% endblock %}
 
 {% block script_expend %}
+    {# back_top #}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var html_height = $(document).height()-892;
+            $(document).scroll(function(){
+                var position = $(document).scrollTop();
+                if (position > 500){
+                    var scroll_percent = Math.floor((position / html_height) * 100);
+                    $('#back_top').fadeIn();
+                    $('#back_top').text( scroll_percent+ '%');
+                }else{
+                    $('#back_top').fadeOut();
+                }
+            });
+
+            $('#back_top').click(function () {
+                $('html,body').animate({scrollTop:0},'fast');
+            })
+        });
+    </script>
     <script type="text/javascript">
         function login() {
             $('#login_modal').modal('show');

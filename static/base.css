@@ -23,3 +23,14 @@ ul.navbar-right{
     height: 20%;
     width: 100%;
 }
+
+
+button.back_top{
+    font-size: small;
+    position:fixed;
+    top: 96%;
+    left: 0.5%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block title %}
+图片
+{% endblock %}
+
+{% block picture_active %}
+active
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'picture_detail.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="col-lg-10 col-lg-offset-1 " id="box">
+            <div>
+                <h1 class="center-block">标题:{{ picture.title }}</h1>
+                <h2>描述:{{ picture.description }}</h2>
+                <h4 class="pull-right">上传时间:{{ picture.create_date }}</h4>
+                <a href="{{ picture.image.url }}"><img src="{{ picture.image.url }}" alt="" ></a>
+            </div>
+            <div style="margin-top: 5%">
+            <a  download="{{ picture.title }}" href="{{ picture.image.url }}"><button class="btn btn-default btn-warning ">下载</button></a>
+            <a href="{% url 'picture' %}"><button class="btn btn-default btn-warning pull-right">返回</button></a>
+            </div>
+        </div>
+    </div>
+{% endblock%}
+
+{% block script_expend %}
+{% endblock %}
+

@@ -40,7 +40,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="{% block home_active %}{% endblock %}"><a href="{% url 'home'%}">首页 </a></li>
+                <li class="{% block picture_active %}{% endblock %}"><a href="{% url 'picture' %}">图集</a></li>
                 <li class="{% block blog_active %}{% endblock %}"><a href="{% url 'blog_list' %}">博客</a></li>
                 <li class="{% block about_active %}{% endblock %}"><a href="{% url 'about' %}">关于</a></li>
                 <li class="dropdown">
@@ -116,6 +116,7 @@
 
 
 
+
     {# JS#}
     <script zindex='-1' src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>
     <script src="{% static 'jquery.min.js' %}"></script>
@@ -134,6 +135,7 @@
         live2d_settings['modelTexturesId'] = 87;
     	initModel("{% static '/live2d/assets/waifu-tips.json' %}")
     </script>
+
 
 
     {% block script_expend %}
