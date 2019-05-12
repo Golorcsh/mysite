@@ -1,68 +1,78 @@
 
-.blog h3{
+.blog h3 {
     margin-top: 0.5em;
 }
 
-.blog{
+.blog {
+    margin-bottom: 5em;
+    padding: 3em;
+    background: white;
+    color: #0f0f0f;
+}
+
+.blog a {
+    color: #0f0f0f;
+}
+
+.blog a:hover {
+    text-decoration: none;
+}
+
+.blog span {
+    margin-left: 1em;
+    color: #0f0f0f;
+}
+
+
+ul.blog-info-description {
     margin-bottom: 1em;
-    padding-bottom: 1em;
-    padding-top: 1em;
 }
 
-.blog:not(:last-child){
-    border-bottom: 1px solid #cccccc;
-}
-
-
-ul.blog-info-description{
-    margin-bottom: 1em;
-}
-
-ul.blog-info-description li{
+ul.blog-info-description li {
     display: inline-block;
     margin-right: 1em;
 }
 
-div.paginator{
+div.paginator {
     text-align: center;
 }
 
-.blog-panel-heading{
+.blog-panel-heading {
     text-align: center;
 }
 
-.blog-panel-body{
+.blog-panel-body {
 
 }
 
-.text-color{
+.text-color {
     color: #ffffff;
 }
 
-.comment-area{
+.comment-area {
     margin-top: 2em;
 }
 
-.comment-title{
+.comment-title {
     border-bottom: 1px solid #cccccc;
     padding-bottom: 0.4em;
     color: #ffffff;
 
 }
 
-.django-ckeditor-widget{
+.django-ckeditor-widget {
     width: 100%;
 }
 
-.comment{
+.comment {
     margin-bottom: 0.5em;
 }
 
-.reply{
+.reply {
     margin-left: 5em;
 }
 
-div#replied_content_container{
+div#replied_content_container {
     border: 1px solid #d1d1d1;
     border-bottom: none;
     overflow: hidden;
@@ -70,7 +80,13 @@ div#replied_content_container{
     padding: 1em 1em 0.5em;
 }
 
-#reply_title{
+#reply_title {
     border-bottom: 1px dashed;
     padding-bottom: 0.5em;
+}
+
+
+.blog img {
+    max-width: 100%;
+    max-height: 100%;
 }

@@ -2,7 +2,7 @@
 {% load comment_tags %}
 
 {% block title %}
-{{ blog.title }}
+    {{ blog.title }}
 {% endblock %}
 
 
@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
                 <div class="panel panel-warning">
-                  <div class="panel-heading blog-panel-heading">
+                    <div class="panel-heading blog-panel-heading">
                         <h1>{{ blog.title }}</h1>
                         <ul class="blog-info-description">
                             <li>作者:{{ blog.author }}</li>
@@ -24,160 +24,172 @@
                             <li> 阅读：{{ blog.get_read_num }}</li>
                             <li>{% get_comment_num blog %}</li>
                         </ul>
-                  </div>
-                  <div class="panel-body blog-panel-body">
-                      <div class="panel-body">
-                        {% autoescape off %}
-                        {{ blog.content }}
-                        {% endautoescape %}
-                      </div>
-                  </div>
+                    </div>
+                    <div class="panel-body blog-panel-body">
+                        <div class="panel-body">
+                            {% autoescape off %}
+                                {{ blog.content }}
+                            {% endautoescape %}
+                        </div>
+                    </div>
 
-                <div class="blog-more">
-                    {% if previous_blog %}
-                        <p><a href="{% url "blog_detail" previous_blog.pk %}">上一篇:{{ previous_blog.title }}</a></p>
-                    {% else %}
-                        <P>已经是第一篇博客</P>
-                    {% endif %}
+                    <div class="blog-more">
+                        {% if previous_blog %}
+                            <p><a href="{% url "blog_detail" previous_blog.pk %}">上一篇:{{ previous_blog.title }}</a></p>
+                        {% else %}
+                            <P>已经是第一篇博客</P>
+                        {% endif %}
 
-                    {% if next_blog %}
-                        <p><a href="{% url "blog_detail" next_blog.pk %}">下一篇:{{ next_blog.title }}</a></p>
-                    {% else %}
-                        <P>已经是最后一篇博客</P>
-                    {% endif %}
+                        {% if next_blog %}
+                            <p><a href="{% url "blog_detail" next_blog.pk %}">下一篇:{{ next_blog.title }}</a></p>
+                        {% else %}
+                            <P>已经是最后一篇博客</P>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
 
         <div class="row">
-                <div class="col-xs-10 col-xs-offset-1">
-                    <div class="comment-area">
-                        {% if user.is_authenticated %}
-                            <form id="comment_form" action="{% url 'update_comment' %}" method="post" style="overflow: hidden">
-                                {% csrf_token %}
-                                <h3 class="comment-title">评论区域</h3>
-                                <span>{{ user.get_username_or_nickname }}欢迎评论~</span>
-                                <div id="reply_content_container" style="display:none;">
-                                    <p id="reply_title">回复：</p>
-                                    <div id="reply_content"></div>
-                                </div>
+            <div class="col-xs-10 col-xs-offset-1">
+                <div class="comment-area">
+                    {% if user.is_authenticated %}
+                        <form id="comment_form" action="{% url 'update_comment' %}" method="post"
+                              style="overflow: hidden">
+                            {% csrf_token %}
+                            <h3 class="comment-title">评论区域</h3>
+                            <span style="color: #ffffff">{{ user.get_username_or_nickname }}欢迎评论~</span>
+                            <div id="reply_content_container" style="display:none;">
+                                <p id="reply_title">回复：</p>
+                                <div id="reply_content"></div>
+                            </div>
 
-                                {% get_comment_form blog as forms %}
-                                {% for field in forms %}
+                            {% get_comment_form blog as forms %}
+                            {% for field in forms %}
                                 {{ field }}
-                                {% endfor %}
-                                <span id="comment_error" class="text-danger pull-left"></span>
-                                <input type="submit" value="提交"  class="btn btn-primary pull-right" >
-                            </form>
-                        {% else %}
-                            <span>您尚未登录，无法评论！</span>
-                            <a class="btn btn-primary" href="javascript:login()">登陆</a>
-                        {% endif %}
-                    </div>
+                            {% endfor %}
+                            <span id="comment_error" class="text-danger pull-left"></span>
+                            <input type="submit" value="提交" class="btn btn-primary pull-right">
+                        </form>
+                    {% else %}
+                        <span>您尚未登录，无法评论！</span>
+                        <a class="btn btn-primary" href="javascript:login()">登陆</a>
+                    {% endif %}
+                </div>
 
-                    <div class="comment-area ">
-                        <h3 class="comment-title">评论列表</h3>
-                        <div id="comment_list">
+                <div class="comment-area ">
+                    <h3 class="comment-title">评论列表</h3>
+                    <div id="comment_list">
                         {% autoescape on %}
-                        {% get_comment blog as comments %}
-                        {% for comment in comments %}
-                            <div id="root_{{ comment.pk }}" class="comment">
-                                <div id="comment_{{ comment.pk }}" class="comment-wrap">
-                                    <div class="photo">
-                                        <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
-                                    </div>
-                                    <div class="comment-block">
-                                        <p><span class="user">{{ comment.user.get_username_or_nickname }}:</span></p>
-                                        <p  class="comment-text">
-                                            {{ comment.text|safe }}
-                                        </p>
-                                        <div class="bottom-comment">
-                                            <div class="comment-date"><span>{{ comment.comment_time|date:'Y-m-d  H:i:s' }}</span></div>
-                                            <ul class="comment-actions">
-                                                <li class="reply btn btn-primary"><a class="button" href="javascript:reply({{ comment.pk }})">回复</a></li>
-                                            </ul>
+                            {% get_comment blog as comments %}
+                            {% for comment in comments %}
+                                <div id="root_{{ comment.pk }}" class="comment">
+                                    <div id="comment_{{ comment.pk }}" class="comment-wrap">
+                                        <div class="photo">
+                                            <div class="avatar"
+                                                 style="background-image: url('{{ comment.user.get_profile }}')"></div>
+                                        </div>
+                                        <div class="comment-block">
+
+                                            <p><span class="user">{{ comment.user.get_username_or_nickname }}:</span>
+                                            </p>
+                                            <p class="comment-text">
+                                                {{ comment.text|safe }}
+                                            </p>
+                                            <div class="bottom-comment">
+                                                <div class="comment-date">
+                                                    <span>{{ comment.comment_time|date:'Y-m-d  H:i:s' }}</span></div>
+                                                <ul class="comment-actions">
+                                                    <li class="reply btn btn-primary"><a class="button"
+                                                                                         href="javascript:reply({{ comment.pk }})">回复</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        {% for reply in comment.root_comment.all %}
-                            <div class="comment-wrap reply">
-                                <div class="photo">
-                                    <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
-                                </div>
-                                <div class="comment-block">
-                                    <p><span class="user">{{ reply.user.get_username_or_nickname }}:</span></p>
-                                    <p id="comment_{{ reply.pk }}" class="comment-text">
-                                        <span>{{ reply.text|safe }}</span>
-                                    </p>
-                                    <div class="bottom-comment">
-                                        <div class="comment-date"><span>{{ reply.comment_time|date:'Y-m-d  H:i:s' }}回复{{ reply.reply_to.get_username_or_nickname }}:</span></div>
-                                        <ul class="comment-actions">
-                                            <li class="reply btn btn-primary"><a class="button" href="javascript:reply({{ reply.pk }})">回复</a></li>
-                                        </ul>
+                                {% for reply in comment.root_comment.all %}
+                                    <div class="comment-wrap reply">
+                                        <div class="photo">
+                                            <div class="avatar"
+                                                 style="background-image: url('{{ reply.user.get_profile }}')"></div>
+                                        </div>
+                                        <div class="comment-block">
+                                            <p><span class="user">{{ reply.user.get_username_or_nickname }}:</span></p>
+                                            <p id="comment_{{ reply.pk }}" class="comment-text">
+                                                <span>{{ reply.text|safe }}</span>
+                                            </p>
+                                            <div class="bottom-comment">
+                                                <div class="comment-date">
+                                                    <span>{{ reply.comment_time|date:'Y-m-d  H:i:s' }}回复{{ reply.reply_to.get_username_or_nickname }}:</span>
+                                                </div>
+                                                <ul class="comment-actions">
+                                                    <li class="reply btn btn-primary"><a class="button"
+                                                                                         href="javascript:reply({{ reply.pk }})">回复</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        {% empty %}
-                            <span id="no_comment">暂无评论</span>
-                        {% endfor %}
+                                {% endfor %}
+                            {% empty %}
+                                <span id="no_comment">暂无评论</span>
+                            {% endfor %}
                         {% endautoescape %}
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form class="box" action="{% url 'login' %}?from={{ request.get_full_path }}" method="post">
+        <div class="modal fade" id="login_modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form class="box" action="{% url 'login' %}?from={{ request.get_full_path }}" method="post">
                         <h1>login</h1>
                         {% csrf_token %}
                         {% for field in login_form %}
-                            <label  for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                             <span>{{ field }}</span>
 
                         {% endfor %}
                         <div class='box-error'>
                             {# 用户错误信息 #}
-                             <span>{{ field.errors.as_text }}</span>
-                             {# 表单错误信息 #}
-                             <span>{{ login_form.non_field_errors }}</span>
+                            <span>{{ field.errors.as_text }}</span>
+                            {# 表单错误信息 #}
+                            <span>{{ login_form.non_field_errors }}</span>
                         </div>
                         <input type="submit" name="登陆" class="btn btn-primary center-block">
                         <a class="center-block" href="{% url 'forgot_password' %}">忘记密码？</a>
                     </form>
+                </div>
             </div>
-          </div>
         </div>
     </div>
 
-        <button id="back_top" class="btn btn-default btn-warning btn-group back_top" >top</button>
+    <button id="back_top" class="btn btn-default btn-warning btn-group back_top">top</button>
 
 {% endblock %}
 
 {% block script_expend %}
     {# back_top #}
     <script type="text/javascript">
-        $(document).ready(function(){
-            var html_height = $(document).height()-892;
-            $(document).scroll(function(){
+        $(document).ready(function () {
+            var html_height = $(document).height() - 892;
+            $(document).scroll(function () {
                 var position = $(document).scrollTop();
-                if (position > 500){
+                if (position > 500) {
                     var scroll_percent = Math.floor((position / html_height) * 100);
                     $('#back_top').fadeIn();
-                    $('#back_top').text( scroll_percent+ '%');
-                }else{
+                    $('#back_top').text(scroll_percent + '%');
+                } else {
                     $('#back_top').fadeOut();
                 }
             });
 
             $('#back_top').click(function () {
-                $('html,body').animate({scrollTop:0},'fast');
+                $('html,body').animate({scrollTop: 0}, 'fast');
             })
         });
     </script>
@@ -186,21 +198,21 @@
             $('#login_modal').modal('show');
         }
 
-        function reply(reply_comment_id){
+        function reply(reply_comment_id) {
             // 设置值
             $('#reply_comment_id').val(reply_comment_id);
             var html = $("#comment_" + reply_comment_id).html();
             $('#reply_content').html(html);
             $('#reply_content_container').show();
-            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function(){
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function () {
                 CKEDITOR.instances['id_text'].focus();
             });
         }
 
-        $("#comment_form").submit(function(){
+        $("#comment_form").submit(function () {
             // 判断是否为空
             $("#comment_error").text('');
-            if(CKEDITOR.instances["id_text"].document.getBody().getText().trim()==''){
+            if (CKEDITOR.instances["id_text"].document.getBody().getText().trim() == '') {
                 $("#comment_error").text('评论内容不能为空');
                 return false;
             }
@@ -212,24 +224,24 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 cache: false,
-                success: function(data){
+                success: function (data) {
                     console.log(data);
-                    if(data['status']=="SUCCESS"){
+                    if (data['status'] == "SUCCESS") {
                         // 插入数据
                         var comment_html = '<div>' + data['username'] +
-                                           ' (' + data['comment_time'] + ')：' +
-                                           data['text'] + '</div>';
+                            ' (' + data['comment_time'] + ')：' +
+                            data['text'] + '</div>';
                         // 清空编辑框的内容
                         CKEDITOR.instances['id_text'].setData('');
                         $('#reply_content_container').hide();
                         $('#reply_comment_id').val('0');
                         $('#no_comment').remove();
-                    }else{
+                    } else {
                         // 显示错误信息
                         $("#comment_error").text(data['message']);
                     }
                 },
-                error: function(xhr){
+                error: function (xhr) {
                     console.log(xhr);
                 }
             });

@@ -16,49 +16,52 @@
         <div class="row">
             <div class="col-lg-10 col-lg-offset-1">
                 <div class="panel panel-default" zindex="1">
-              <div class="panel-heading">
-                  {% block blog_type_name %}搜索“{{ search_words }}”，搜索结果为{% endblock %}
-              </div>
-              <div class="panel-body">
-                {% if search_words == ''%}
-                    <p>您输入的关键字为空，请输入搜索内容。例如：Python Linux Django</p>
-                {% else %}
-                    {% for blog in page_of_search %}
-                        <div class="blog">
-                            <a href="{%url 'blog_detail' blog.pk %}"><h4>{{ blog.title }}</h4></a>
-                            <p>
-                                <span class="glyphicon glyphicon-user" ></span> {{ blog.author }}
-                                <span class="glyphicon glyphicon-tag" ></span><a href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>
-                                <span class="glyphicon glyphicon-time" ></span> {{ blog.create_date }}
-                                <span class="glyphicon glyphicon-book" ></span> {{ blog.get_read_num }}
-                                <span class="glyphicon glyphicon-comment" ></span> {% get_comment_num blog %}
-                            </p>
-                            <h4>{{ blog.content|striptags|truncatechars:100 }}</h4>
-                        </div>
-                    {% empty %}
-                        <div class="blog">
-                            <p><h4>暂无博客</h4></p>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-              </div>
-            </div>
+                    <div class="panel-heading">
+                        {% block blog_type_name %}搜索“{{ search_words }}”，搜索结果为{% endblock %}
+                    </div>
+                    <div class="panel-body">
+                        {% if search_words == '' %}
+                            <p>您输入的关键字为空，请输入搜索内容。例如：Python Linux Django</p>
+                        {% else %}
+                            {% for blog in page_of_search %}
+                                <div class="blog">
+                                    <a href="{% url 'blog_detail' blog.pk %}"><h4>{{ blog.title }}</h4></a>
+                                    <p>
+                                        <span class="glyphicon glyphicon-user"></span> {{ blog.author }}
+                                        <span class="glyphicon glyphicon-tag"></span><a
+                                            href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>
+                                        <span class="glyphicon glyphicon-time"></span> {{ blog.create_date }}
+                                        <span class="glyphicon glyphicon-book"></span> {{ blog.get_read_num }}
+                                        <span class="glyphicon glyphicon-comment"></span> {% get_comment_num blog %}
+                                    </p>
+                                    <h4>{{ blog.content|striptags|truncatechars:100 }}</h4>
+                                </div>
+                            {% empty %}
+                                <div class="blog">
+                                    <p><h4>暂无博客</h4></p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
         {#分页#}
-    {% if page_of_search %}
-        <div class="paginator">
-                 <ul class="pagination">
-                {# 上一页 #}
-                <li>
-                    {% if page_of_search.has_previous %}
-                        <a class="active" href="{% url 'search'%}?key_word={{ search_words }}&page={{ page_of_search.previous_page_number }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    {% else %}
-                        <span aria-hidden="true">&laquo;</span>
-                    {% endif %}
-                </li>
+        {% if page_of_search %}
+            <div class="paginator">
+                <ul class="pagination">
+                    {# 上一页 #}
+                    <li>
+                        {% if page_of_search.has_previous %}
+                            <a class="active"
+                               href="{% url 'search' %}?key_word={{ search_words }}&page={{ page_of_search.previous_page_number }}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        {% else %}
+                            <span aria-hidden="true">&laquo;</span>
+                        {% endif %}
+                    </li>
 
                     {#paginator.page_range为paginator的范围#}
                     {# 全部页面 #}
@@ -71,23 +74,28 @@
                             {% if page_num == "..." %}
                                 <li><span>{{ page_num }}</span></li>
                             {% else %}
-                                <li ><a href="{% url 'search'%}?key_word={{ search_words }}&page={{ page_num }}">{{ page_num }}</a></li>
+                                <li>
+                                    <a href="{% url 'search' %}?key_word={{ search_words }}&page={{ page_num }}">{{ page_num }}</a>
+                                </li>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                {# 下一页 #}
-                <li>
-                    {% if page_of_search.has_next %}
-                        <a class="active" href="{% url 'search'%}?key_word={{ search_words }}&page={{ page_of_search.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    {% else %}
-                        <span aria-hidden="true" >&raquo;</span>
-                    {% endif %}
-                </li>
-              </ul>
-                <p class="text-color" style="display: none"> 共有{{page_of_search.paginator.count }}篇,当前第{{ page_of_search.number }}页，共有{{ page_of_search.paginator.num_pages }}页</p>
+                    {# 下一页 #}
+                    <li>
+                        {% if page_of_search.has_next %}
+                            <a class="active"
+                               href="{% url 'search' %}?key_word={{ search_words }}&page={{ page_of_search.next_page_number }}"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        {% else %}
+                            <span aria-hidden="true">&raquo;</span>
+                        {% endif %}
+                    </li>
+                </ul>
+                <p class="text-color" style="display: none">
+                    共有{{ page_of_search.paginator.count }}篇,当前第{{ page_of_search.number }}页，共有{{ page_of_search.paginator.num_pages }}页</p>
             </div>
-    {% endif %}
+        {% endif %}
     </div>
 {% endblock %}

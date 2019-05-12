@@ -1,9 +1,9 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% block title %}
-主页
+    主页
 {% endblock %}
 {% block home_active %}
-active
+    active
 {% endblock %}
 
 
@@ -13,14 +13,14 @@ active
 
         <div class="col-lg-10 col-lg-offset-1">
             <div class="jumbotron">
-                <h1>Hello, Golor!</h1>
-                <p>...</p>
-                <p><a class="btn btn-primary btn-lg " href="#" role="button">Learn more</a></p>
+                <h1>Hello, {{ user }}欢迎来到我的网站！</h1>
+                <p></p>
+                <p><a class="btn btn-primary btn-lg pull-right" href="{% url 'blog_list' %}" role="button">了解更多</a></p>
             </div>
 
         </div>
     </div>
 
 
-{% endblock%}
+{% endblock %}
 

@@ -3,35 +3,68 @@
 
 
 {% block title %}
-博客
+    博客
 {% endblock %}
 
 {% block blog_active %}
-active
+    active
 {% endblock %}
 
+{% block navbar %}
+    <li class="active"><a href="{% url 'blog_list' %}">博客</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">分类 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            {% for blog_type in blog_types %}
+                <li>
+                    <a href="{% url 'blog_with_type' blog_type.pk %}">{{ blog_type.type_name }}({{ blog_type.blog_count }})</a>
+                </li>
+            {% empty %}
+                <li>暂无分类</li>
+            {% endfor %}
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">归档 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            {% for blog_date,blog_count in blog_dates.items %}
+                <a href="{% url "blog_with_date" blog_date.year blog_date.month %}">{{ blog_date|date:"Y-M" }}({{ blog_count }})</a>
+            {% empty %}
+                <li>暂无归档</li>
+            {% endfor %}
+        </ul>
+    </li>
+
+{% endblock %}
 
 
 {% block content %}
     <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
-            <div class="panel panel-default" zindex="1">
-              <div class="panel-heading">
-                  <h3 style="text-align: center">{% block blog_type_name %}博客列表{% endblock %}</h3>
-              </div>
-              <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 ">
                 {% for blog in blogs.object_list %}
                     <div class="blog">
-                        <a href="{%url 'blog_detail' blog.pk %}"><h4>{{ blog.title }}</h4></a>
-                        <p>
-                            <span class="glyphicon glyphicon-user" ></span> {{ blog.author }}
-                            <span class="glyphicon glyphicon-tag" ></span><a href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>
-                            <span class="glyphicon glyphicon-time" ></span> {{ blog.create_date }}
-                            <span class="glyphicon glyphicon-book" ></span> {{ blog.get_read_num }}
-                            <span class="glyphicon glyphicon-comment" ></span> {% get_comment_num blog %}
-                        </p>
-                        <h4>{{ blog.content|striptags|truncatechars:100 }}</h4>
+                        <div style="text-align: center;">
+                            <h2><a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a></h2>
+                            <span class="glyphicon glyphicon-time">{{ blog.create_date }}</span>
+                            <span class="glyphicon glyphicon-user">{{ blog.author }}</span>
+                            <span class="glyphicon glyphicon-tag"><a
+                                    href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a></span>
+                            <p></p>
+                            <span class="glyphicon glyphicon-book">{{ blog.get_read_num }}</span>
+                            <span class="glyphicon glyphicon-comment">{% get_comment_num blog %}</span>
+                            <img src="{{ blog.image.url }}" alt="">
+                        </div>
+                        <p style="margin-top: 1em">
+                            {% autoescape off %}{{ blog.content|striptags|truncatechars:120 }}{% endautoescape %}</p>
+                        <div style="text-align: center;">
+                            <a href="{% url 'blog_detail' blog.pk %}">
+                                <button class="btn btn-default btn-warning" style="margin-top: 2em">阅读全文</button>
+                            </a>
+                        </div>
                     </div>
 
                 {% empty %}
@@ -39,82 +72,109 @@ active
                         <p><h4>暂无博客</h4></p>
                     </div>
                 {% endfor %}
-              </div>
-            </div>
 
-            {#分页#}
-            <div class="paginator">
-                 <ul class="pagination">
-                {# 上一页 #}
-                <li>
-                    {% if page_of_blogs.has_previous %}
-                        <a class="active" href="?page={{ page_of_blogs.previous_page_number }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    {% else %}
-                        <span aria-hidden="true">&laquo;</span>
-                    {% endif %}
-                </li>
-
-                    {#paginator.page_range为paginator的范围#}
-                    {# 全部页面 #}
-                    {% for page_num in page_range %}
-                        {# 判断当前页码，高亮当前页码 #}
-                        {% if page_of_blogs.number == page_num %}
-                            <li class="active"><span>{{ page_num }}</span></li>
-                        {% else %}
-                            {# 将省略设置为不可选 #}
-                            {% if page_num == "..." %}
-                                <li><span>{{ page_num }}</span></li>
+                {#分页#}
+                <div class="paginator">
+                    <ul class="pagination">
+                        {# 上一页 #}
+                        <li>
+                            {% if page_of_blogs.has_previous %}
+                                <a class="active" href="?page={{ page_of_blogs.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
                             {% else %}
-                                <li ><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                <span aria-hidden="true">&laquo;</span>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                {# 下一页 #}
-                <li>
-                    {% if page_of_blogs.has_next %}
-                        <a class="active" href="?page={{ page_of_blogs.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    {% else %}
-                        <span aria-hidden="true">&raquo;</span>
-                    {% endif %}
-                </li>
-              </ul>
-              <p class="text-color"> 共有{{page_of_blogs.paginator.count }}篇,当前第{{ page_of_blogs.number }}页，共有{{ page_of_blogs.paginator.num_pages }}页</p>
-            </div>
+                        </li>
 
-        </div>
-
-        <div class="hidden-xs col-sm-5 col-md-4 col-lg-3">
-
-            <div class="panel panel-default">
-              <div class="panel-heading">博客分类</div>
-              <div class="panel-body">
-                <ul class="blog-types">
-                    {% for blog_type in blog_types %}
-                    <li><a href="{% url 'blog_with_type' blog_type.pk %}">{{ blog_type.type_name }}({{ blog_type.blog_count }})</a></li>
-                    {% empty %}
-                    <li>暂无分类</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">日期归档</div>
-                <div class="panel-body">
-                    <ul>
-                        {% for blog_date,blog_count in blog_dates.items %}
-                            <a href="{% url "blog_with_date" blog_date.year blog_date.month %}">{{ blog_date|date:"Y-M" }}({{ blog_count }})</a>
+                        {#paginator.page_range为paginator的范围#}
+                        {# 全部页面 #}
+                        {% for page_num in page_range %}
+                            {# 判断当前页码，高亮当前页码 #}
+                            {% if page_of_blogs.number == page_num %}
+                                <li class="active"><span>{{ page_num }}</span></li>
+                            {% else %}
+                                {# 将省略设置为不可选 #}
+                                {% if page_num == "..." %}
+                                    <li><span>{{ page_num }}</span></li>
+                                {% else %}
+                                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% endif %}
                         {% endfor %}
-
+                        {# 下一页 #}
+                        <li>
+                            {% if page_of_blogs.has_next %}
+                                <a class="active" href="?page={{ page_of_blogs.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&raquo;</span>
+                            {% endif %}
+                        </li>
                     </ul>
+                    <p class="text-color">
+                        共有{{ page_of_blogs.paginator.count }}篇,当前第{{ page_of_blogs.number }}页，共有{{ page_of_blogs.paginator.num_pages }}页</p>
                 </div>
+
             </div>
-      </div>
+
+            {#            <div class="hidden-xs col-sm-5 col-md-4 col-lg-3">#}
+            {##}
+            {#                <div class="panel panel-default">#}
+            {#                    <div class="panel-heading">博客分类</div>#}
+            {#                    <div class="panel-body">#}
+            {#                        <ul class="blog-types">#}
+            {#                            {% for blog_type in blog_types %}#}
+            {#                                <li>#}
+            {#                                    <a href="{% url 'blog_with_type' blog_type.pk %}">{{ blog_type.type_name }}({{ blog_type.blog_count }})</a>#}
+            {#                                </li>#}
+            {#                            {% empty %}#}
+            {#                                <li>暂无分类</li>#}
+            {#                            {% endfor %}#}
+            {#                        </ul>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {##}
+            {#                <div class="panel panel-default">#}
+            {#                    <div class="panel-heading">日期归档</div>#}
+            {#                    <div class="panel-body">#}
+            {#                        <ul>#}
+            {#                            {% for blog_date,blog_count in blog_dates.items %}#}
+            {#                                <a href="{% url "blog_with_date" blog_date.year blog_date.month %}">{{ blog_date|date:"Y-M" }}({{ blog_count }})</a>#}
+            {#                            {% endfor %}#}
+            {##}
+            {#                        </ul>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
         </div>
     </div>
-{% endblock%}
+    <button id="back_top" class="btn btn-default btn-warning btn-group back_top">top</button>
+
+{% endblock %}
+
+{% block script_expend %}
+    {# back_top #}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var html_height = $(document).height() - 946;
+            $(document).scroll(function () {
+                var position = $(document).scrollTop();
+                if (position > 500) {
+                    var scroll_percent = Math.floor((position / html_height) * 100);
+                    $('#back_top').fadeIn();
+                    $('#back_top').text(scroll_percent + '%');
+                } else {
+                    $('#back_top').fadeOut();
+                }
+            });
+
+            $('#back_top').click(function () {
+                $('html,body').animate({scrollTop: 0}, 'fast');
+            })
+        });
+    </script>
+{% endblock %}
 

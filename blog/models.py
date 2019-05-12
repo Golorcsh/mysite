@@ -18,6 +18,7 @@ class Blog(models.Model, ReadNumExpandMethod):
     title = models.CharField(default='title', max_length=50)
     blog_type = models.ForeignKey(BlogType, on_delete=models.CASCADE)
     content = RichTextUploadingField()
+    image = models.ImageField(default='default.jpg', upload_to='blog_image/')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     create_date = models.DateTimeField(auto_now_add=True)
     last_updated_time = models.DateTimeField(auto_now=True)

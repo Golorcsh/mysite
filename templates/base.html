@@ -5,78 +5,70 @@
 {% load comment_tags %}
 
 <body style="margin-top: 5%">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
-        <link href="https://cdn.bootcss.com/font-awesome/5.8.0/css/all.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="{% static 'live2d/assets/waifu.css' %}"/>
-        <link rel="stylesheet" href="{% static 'base.css' %}">
-        <link rel="stylesheet" href="{% static "blog.css" %}">
-        <link rel="stylesheet" href="{% static "style.css" %}">
-        <link rel="stylesheet" href="{% static "about.css" %}">
-        <link rel="stylesheet" href="{% static "comment.css" %}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <link href="https://cdn.bootcss.com/font-awesome/5.8.0/css/all.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'live2d/assets/waifu.css' %}"/>
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static "blog.css" %}">
+    <link rel="stylesheet" href="{% static "style.css" %}">
+    <link rel="stylesheet" href="{% static "about.css" %}">
+    <link rel="stylesheet" href="{% static "comment.css" %}">
 
 
-        {% block head %}
-        {% endblock %}
+    {% block head %}
+    {% endblock %}
 
 
-        <title>{% block title %}{% endblock%}</title>
-        <nav  class="navbar navbar-default navbar-fixed-top ">
-          <div class="container-fluid">
+    <title>{% block title %}{% endblock %}</title>
+    <nav class="navbar navbar-default navbar-fixed-top ">
+        <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{% url "home" %}">Golor</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url "home" %}">Golor</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li class="{% block picture_active %}{% endblock %}"><a href="{% url 'picture' %}">图集</a></li>
-                <li class="{% block blog_active %}{% endblock %}"><a href="{% url 'blog_list' %}">博客</a></li>
-                <li class="{% block about_active %}{% endblock %}"><a href="{% url 'about' %}">关于</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分类 <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">One more separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
+                <ul class="nav navbar-nav">
+                    {% block navbar %}
+                        <li class="{% block picture_active %}{% endblock %}"><a href="{% url 'picture' %}">图集</a></li>
+                        <li class="{% block blog_active %}{% endblock %}"><a href="{% url 'blog_list' %}">博客</a></li>
+                        <li class="{% block about_active %}{% endblock %}"><a href="{% url 'about' %}">关于</a></li>
+                    {% endblock %}
+                </ul>
 
-              <form class="navbar-form navbar-left" action="{% url 'search' %}">
-                <div class="form-group">
-                  <input type="text" name='key_word' class="form-control"  autocomplete="off" placeholder="搜索博客">
-                </div>
-                <button type="submit" class="btn btn-default">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-              </form>
+                <form class="navbar-form navbar-left" action="{% url 'search' %}">
+                    <div class="form-group">
+                        <input type="text" name='key_word' class="form-control" autocomplete="off" placeholder="搜索博客">
+                    </div>
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
 
-              <ul class="nav navbar-nav navbar-right">
-                {% if not user.is_authenticated %}
-                    <li><a href="{% url 'login' %}">登陆</a></li>
-                    <li><a href="{% url 'register' %}">注册</a></li>
-                {% else %}
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {{ user.get_username_or_nickname }}
-                      <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url 'login' %}">登陆</a></li>
+                        <li><a href="{% url 'register' %}">注册</a></li>
+                    {% else %}
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            {{ user.get_username_or_nickname }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
                             <li><a href="{% url 'user_info' %}">个人中心</a></li>
 
                             {% if user.is_superuser %}
@@ -84,62 +76,59 @@
                             {% endif %}
                             <li><a href="{% url 'change_password' %}">修改密码</a></li>
                             <li><a href="{% url 'logout' %}">注销</a></li>
-                  </ul>
-                {% endif %}
-              </ul>
+                        </ul>
+                    {% endif %}
+                </ul>
             </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
-    </head>
+        </div><!-- /.container-fluid -->
+    </nav>
+</head>
 
 
 
-    {% block content %}
-    {% endblock %}
+{% block content %}
+{% endblock %}
 
 
 
-    <div class="waifu">
-        <div class="waifu-tips"></div>
-        <canvas id="live2d" class="live2d"></canvas>
-        <div class="waifu-tool">
-            <a href="{% url 'home' %}"><span class="fui-home"></span></a>
-            <span class="fui-chat"></span>
-            <span class="fui-eye"></span>
-            <span class="fui-user"></span>
-            <span class="fui-photo"></span>
-            <span class="fui-info-circle"></span>
-            <span class="fui-cross"></span>
-        </div>
+<div class="waifu">
+    <div class="waifu-tips"></div>
+    <canvas id="live2d" class="live2d"></canvas>
+    <div class="waifu-tool">
+        <a href="{% url 'home' %}"><span class="fui-home"></span></a>
+        <span class="fui-chat"></span>
+        <span class="fui-eye"></span>
+        <span class="fui-user"></span>
+        <span class="fui-photo"></span>
+        <span class="fui-info-circle"></span>
+        <span class="fui-cross"></span>
     </div>
+</div>
+
+
+{# JS#}
+<script zindex='-1' src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>
+<script src="{% static 'jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+{# ckeditor #}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{# 看板 #}
+<script type="text/javascript" src="{% static 'mouse.js' %}"></script>
+<script src="{% static 'live2d/assets/waifu-tips.js' %}"></script>
+<script src="{% static 'live2d/assets/live2d.js' %}"></script>
+
+
+<script type="text/javascript">
+    live2d_settings['modelId'] = 1;
+    live2d_settings['modelTexturesId'] = 87;
+    initModel("{% static '/live2d/assets/waifu-tips.json' %}")
+</script>
 
 
 
+{% block script_expend %}
 
-
-    {# JS#}
-    <script zindex='-1' src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"></script>
-    <script src="{% static 'jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
-    {# ckeditor #}
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-    {# 看板 #}
-    <script type="text/javascript" src="{% static 'mouse.js' %}"></script>
-    <script src="{% static 'live2d/assets/waifu-tips.js' %}"></script>
-    <script src="{% static 'live2d/assets/live2d.js' %}"></script>
-
-
-    <script type="text/javascript">
-        live2d_settings['modelId'] = 1;
-        live2d_settings['modelTexturesId'] = 87;
-    	initModel("{% static '/live2d/assets/waifu-tips.json' %}")
-    </script>
-
-
-
-    {% block script_expend %}
-
-    {% endblock %}
+{% endblock %}
 </body>
 </html>

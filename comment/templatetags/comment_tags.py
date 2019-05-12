@@ -1,7 +1,11 @@
 from django import template
+from django.core.paginator import Paginator
 from django.contrib.contenttypes.models import ContentType
 from ..forms import CommentForm
 from ..models import Comment
+
+
+EachPageNumOfComment = 10
 
 # 自定义模板标签
 register = template.Library()
@@ -27,3 +31,4 @@ def get_comment(obj):
     content_type = ContentType.objects.get_for_model(obj)
     comments = Comment.objects.filter(content_type=content_type, object_id=obj.pk, parent=None).order_by('-comment_time')
     return comments
+
