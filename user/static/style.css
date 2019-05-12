@@ -110,3 +110,10 @@
     background: #7f8c8d;
     border-color: #2ecc71;
 }
+
+
+.user li{
+    margin-top: 2em;
+    font-size: large;
+    border-radius:25px;
+}

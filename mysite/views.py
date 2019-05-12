@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db.models import Sum, Q
 from django.core.paginator import Paginator
 from blog.models import Blog
+from picture.models import Picture
 
 EachPageNumOfSearch = 10
 
@@ -49,9 +50,8 @@ def search(request):
 
     if condition is not None:
         # 筛选：搜索
-        search_blogs = []
         search_blogs = Blog.objects.filter(condition)
-        if search_words !=  '':
+        if search_words != '':
             content = search_paginator(request, search_blogs)
             content['search_blogs_count'] = search_blogs.count()
 

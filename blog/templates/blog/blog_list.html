@@ -31,7 +31,9 @@
            aria-expanded="false">归档 <span class="caret"></span></a>
         <ul class="dropdown-menu">
             {% for blog_date,blog_count in blog_dates.items %}
-                <a href="{% url "blog_with_date" blog_date.year blog_date.month %}">{{ blog_date|date:"Y-M" }}({{ blog_count }})</a>
+                <li>
+                    <a href="{% url "blog_with_date" blog_date.year blog_date.month %}">{{ blog_date|date:"Y-M" }}({{ blog_count }})</a>
+                </li>
             {% empty %}
                 <li>暂无归档</li>
             {% endfor %}
