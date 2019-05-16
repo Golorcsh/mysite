@@ -13,7 +13,7 @@
 
         <div class="col-lg-10 col-lg-offset-1">
             <div class="jumbotron">
-                <h1>Hello, {{ user }}欢迎来到我的网站！</h1>
+                <h1>Hello, {% if user.is_authenticated %}{{ user }}{% endif %}欢迎来到我的网站！</h1>
                 <p></p>
                 <p><a class="btn btn-primary btn-lg pull-right" href="{% url 'blog_list' %}" role="button">了解更多</a></p>
             </div>
