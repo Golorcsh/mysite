@@ -33,7 +33,7 @@ class RegisterForm(forms.Form):
         attrs={'autocomplete': "off", 'placeholder': '请输入用户名(6-20)'}))
 
     email = forms.EmailField(label='邮箱', required=False, widget=forms.TextInput(
-        attrs={'placeholder': '请输入邮箱'}))
+        attrs={'placeholder': '请输入邮箱','autocomplete': "off",}))
 
     verification_code = forms.CharField(label='验证码', required=False, widget=forms.TextInput(
             attrs={'autocomplete': "off", 'placeholder': '点击“发送验证码”发送到邮箱'}))
@@ -105,12 +105,9 @@ class ChangeNickname(forms.Form):
 
 
 class BindEmailForm(forms.Form):
-    email = forms.EmailField(
-        label='邮箱',
-        widget=forms.EmailInput(
-            attrs={'class': 'form-control', 'placeholder':'请输入正确的邮箱'}
-        )
-    )
+    email = forms.EmailField(label='邮箱', widget=forms.TextInput(
+        attrs={'placeholder': '请输入邮箱','autocomplete': "off",}))
+
     verification_code = forms.CharField(
         label='验证码',
         required=False,
