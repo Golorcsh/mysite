@@ -11,6 +11,11 @@
                     <div class="panel-body user">
                         <ul>
                             <h1 style="text-align: center">{{ user.username }}的个人中心</h1>
+                            <li style="text-align: center">
+                                <div>
+                                    <img  style="height: 200px;width:200px;border-radius: 50% " src="{{ user.get_profile }}" alt="">
+                                </div>
+                            </li>
                             <li> 用户名:{{ user.username }}
                             </li>
                             <li>昵称: {{ user.get_username_or_nickname }}<a class="pull-right"
